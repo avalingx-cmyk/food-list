@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food List - Colombo, Vavuniya, Jaffna</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; }
+    header { background: #1a1a2e; color: white; padding: 20px; text-align: center; }
+    header h1 { font-size: 24px; margin-bottom: 8px; }
+    header p { opacity: 0.8; font-size: 14px; }
+    .controls { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .controls select, .controls input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    .controls input { flex: 1; min-width: 200px; }
+    .stats { max-width: 1200px; margin: 0 auto 20px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .stat-card { background: white; padding: 16px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .stat-card h3 { font-size: 12px; text-transform: uppercase; color: #666; margin-bottom: 4px; }
+    .stat-card p { font-size: 24px; font-weight: bold; color: #1a1a2e; }
+    .grid { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 16px; }
+    .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .card-header { padding: 16px; border-bottom: 1px solid #eee; }
+    .card-header h2 { font-size: 16px; margin-bottom: 4px; }
+    .card-header .meta { font-size: 12px; color: #666; display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge { background: #e8e8e8; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+    .badge.fine-dining { background: #ffeaa7; }
+    .badge.mid-range { background: #81ecec; }
+    .badge.budget { background: #55efc4; }
+    .badge.street { background: #fab1a0; }
+    .card-body { padding: 16px; }
+    .card-body h3 { font-size: 14px; margin-bottom: 8px; color: #666; }
+    .dishes { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .dish { font-size: 13px; padding: 4px 0; border-bottom: 1px solid #f5f5f5; }
+    .reviews { font-size: 12px; color: #666; }
+    .review { background: #f9f9f9; padding: 8px; border-radius: 4px; margin-bottom: 4px; }
+    .rating { color: #fdcb6e; }
+    .no-results { text-align: center; padding: 40px; color: #666; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🍽️ Food List</h1>
+    <p>Restaurant menus, prices & reviews — Colombo • Vavuniya • Jaffna</p>
+  </header>
+
+  <div class="controls">
+    <select id="cityFilter">
+      <option value="all">All Cities</option>
+      <option value="colombo">Colombo</option>
+      <option value="vavuniya">Vavuniya</option>
+      <option value="jaffna">Jaffna</option>
+    </select>
+    <select id="categoryFilter">
+      <option value="all">All Categories</option>
+      <option value="Fine Dining">Fine Dining</option>
+      <option value="Mid-Range">Mid-Range</option>
+      <option value="Budget">Budget</option>
+      <option value="Budget & Street Food">Budget & Street Food</option>
+      <option value="Vegetarian">Vegetarian</option>
+      <option value="Desserts & Ice Cream">Desserts & Ice Cream</option>
+      <option value="International Dining">International Dining</option>
+      <option value="Other Notable">Other Notable</option>
+    </select>
+    <input type="text" id="searchInput" placeholder="Search restaurants, dishes, cuisine...">
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div class="grid" id="grid"></div>
+
+  <script>
+    let restaurants = [];
+
+    async function loadData() {
+      const res = await fetch('data/restaurants.json');
+      const data = await res.json();
+      restaurants = data.restaurants;
+      renderStats(restaurants);
+      renderCards(restaurants);
+    }
+
+    function renderStats(list) {
+      const cities = {};
+      list.forEach(r => { cities[r.city] = (cities[r.city] || 0) + 1; });
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card"><h3>Total Restaurants</h3><p>${list.length}</p></div>
+        <div class="stat-card"><h3>Colombo</h3><p>${cities.colombo || 0}</p></div>
+        <div class="stat-card"><h3>Vavuniya</h3><p>${cities.vavuniya || 0}</p></div>
+        <div class="stat-card"><h3>Jaffna</h3><p>${cities.jaffna || 0}</p></div>
+      `;
+    }
+
+    function getBadgeClass(cat) {
+      if (cat.includes('Fine')) return 'fine-dining';
+      if (cat.includes('Mid')) return 'mid-range';
+      if (cat.includes('Budget') || cat.includes('Street')) return 'budget';
+      return '';
+    }
+
+    function renderCards(list) {
+      const grid = document.getElementById('grid');
+      if (!list.length) { grid.innerHTML = '<div class="no-results">No restaurants found.</div>'; return; }
+      grid.innerHTML = list.map(r => `
+        <div class="card">
+          <div class="card-header">
+            <h2>${r.name}</h2>
+            <div class="meta">
+              <span class="badge ${getBadgeClass(r.category)}">${r.category}</span>
+              <span class="badge">${r.city}</span>
+              <span class="badge">${r.cuisine}</span>
+              ${r.rating ? `<span class="badge">★ ${r.rating}</span>` : ''}
+            </div>
+            <div style="font-size:12px;color:#666;margin-top:4px;">${r.priceRange}</div>
+          </div>
+          <div class="card-body">
+            <h3>Signature Dishes</h3>
+            <div class="dishes">
+              ${(r.signatureDishes || []).slice(0, 4).map(d => `<div class="dish">• ${d}</div>`).join('')}
+            </div>
+            ${(r.userReviews || []).length ? `
+              <h3>Reviews (${r.userReviews.length})</h3>
+              <div class="reviews">
+                ${r.userReviews.slice(0, 2).map(rv => `
+                  <div class="review">
+                    ${rv.rating ? `<span class="rating">★ ${rv.rating}</span> — ` : ''}${rv.text}
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filter() {
+      const city = document.getElementById('cityFilter').value;
+      const cat = document.getElementById('categoryFilter').value;
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      let filtered = restaurants;
+      if (city !== 'all') filtered = filtered.filter(r => r.city === city);
+      if (cat !== 'all') filtered = filtered.filter(r => r.category === cat);
+      if (search) filtered = filtered.filter(r =>
+        r.name.toLowerCase().includes(search) ||
+        r.cuisine.toLowerCase().includes(search) ||
+        (r.signatureDishes || []).some(d => d.toLowerCase().includes(search))
+      );
+      renderStats(filtered);
+      renderCards(filtered);
+    }
+
+    document.getElementById('cityFilter').addEventListener('change', filter);
+    document.getElementById('categoryFilter').addEventListener('change', filter);
+    document.getElementById('searchInput').addEventListener('input', filter);
+
+    loadData();
+  </script>
+</body>
+</html>
