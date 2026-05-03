@@ -7,7 +7,7 @@ final restaurantServiceProvider = Provider<RestaurantService>((ref) {
   return RestaurantService();
 });
 
-// Provider for fetching and managing the list of restaurants
+// Provider for fetching and managing the list of restaurants (from Supabase with asset fallback)
 final restaurantsProvider = StateNotifierProvider<RestaurantsNotifier, AsyncValue<List<Restaurant>>>((ref) {
   return RestaurantsNotifier(ref.read(restaurantServiceProvider));
 });
@@ -30,7 +30,7 @@ class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
   Future<void> fetchRestaurants() async {
     state = const AsyncValue.loading();
     try {
-      final restaurants = await _restaurantService.getRestaurants(searchQuery: _searchQuery);
+      final restaurants = await _restaurantService.getRestaurantsFromAssets();
       state = AsyncValue.data(restaurants);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
@@ -40,7 +40,7 @@ class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
   Future<void> addRestaurant(Restaurant restaurant) async {
     try {
       await _restaurantService.addRestaurant(restaurant);
-      await fetchRestaurants(); // Refresh the list
+      await fetchRestaurants();
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
@@ -49,7 +49,7 @@ class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
   Future<void> updateRestaurant(Restaurant restaurant) async {
     try {
       await _restaurantService.updateRestaurant(restaurant);
-      await fetchRestaurants(); // Refresh the list
+      await fetchRestaurants();
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
@@ -58,47 +58,33 @@ class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
   Future<void> deleteRestaurant(String id) async {
     try {
       await _restaurantService.deleteRestaurant(id);
-      await fetchRestaurants(); // Refresh the list
+      await fetchRestaurants();
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
 }
 
-  Future<void> fetchRestaurants() async {
-    state = const AsyncValue.loading();
-    try {
-      final restaurants = await _restaurantService.getRestaurants();
-      state = AsyncValue.data(restaurants);
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-    }
-  }
+// Provider for fetching a single restaurant by ID
+final restaurantDetailProvider = FutureProvider.family<Restaurant?, String>((ref, id) async {
+  final service = ref.read(restaurantServiceProvider);
+  return service.getRestaurantById(id);
+});
 
-  Future<void> addRestaurant(Restaurant restaurant) async {
-    try {
-      await _restaurantService.addRestaurant(restaurant);
-      await fetchRestaurants(); // Refresh the list
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-    }
-  }
+// Provider for loading all restaurants from local JSON assets
+final restaurantAssetsProvider = FutureProvider<List<Restaurant>>((ref) async {
+  final service = ref.read(restaurantServiceProvider);
+  return service.getRestaurantsFromAssets();
+});
 
-  Future<void> updateRestaurant(Restaurant restaurant) async {
-    try {
-      await _restaurantService.updateRestaurant(restaurant);
-      await fetchRestaurants(); // Refresh the list
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-    }
-  }
+// Provider for loading restaurants by city from assets
+final restaurantsByCityProvider = FutureProvider.family<List<Restaurant>, String>((ref, city) async {
+  final service = ref.read(restaurantServiceProvider);
+  return service.getRestaurantsByCity(city);
+});
 
-  Future<void> deleteRestaurant(String id) async {
-    try {
-      await _restaurantService.deleteRestaurant(id);
-      await fetchRestaurants(); // Refresh the list
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-    }
-  }
-}
+// Provider for searching restaurants from assets
+final searchRestaurantsProvider = FutureProvider.family<List<Restaurant>, String>((ref, query) async {
+  final service = ref.read(restaurantServiceProvider);
+  return service.searchRestaurants(query);
+});

@@ -1,35 +1,45 @@
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/restaurant_model.dart';
 
 class RestaurantService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  // Get all restaurants for the current user
-  Future<List<Restaurant>> getRestaurants({String searchQuery = ''}) async {
+  // Get all restaurants from local JSON asset
+  Future<List<Restaurant>> getRestaurantsFromAssets() async {
+    try {
+      final jsonString = await rootBundle.loadString('assets/data/restaurants.json');
+      final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
+      final restaurants = jsonData['restaurants'] as List<dynamic>;
+      return restaurants.map((json) => Restaurant.fromJson(json as Map<String, dynamic>)).toList();
+    } catch (e) {
+      throw Exception('Failed to load restaurants from assets: $e');
+    }
+  }
+
+  // Get all restaurants for the current user (from Supabase)
+  Future<List<Restaurant>> getRestaurants() async {
     try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
 
-      var query = _supabase
+      final response = await _supabase
           .from('restaurants')
           .select()
-          .eq('user_id', user.id);
-
-      if (searchQuery.isNotEmpty) {
-        query = query.or('name.ilike.%$searchQuery%,city.ilike.%$searchQuery%');
-      }
-
-      final response = await query.order('created_at', ascending: false);
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false);
 
       return (response as List)
           .map((json) => Restaurant.fromJson(json))
           .toList();
     } catch (e) {
-      throw Exception('Failed to load restaurants: $e');
+      // Fallback to assets if Supabase fails
+      return getRestaurantsFromAssets();
     }
   }
 
-  // Get a restaurant by ID (for the current user)
+  // Get a restaurant by ID
   Future<Restaurant?> getRestaurantById(String id) async {
     try {
       final user = _supabase.auth.currentUser;
@@ -44,8 +54,38 @@ class RestaurantService {
 
       return response != null ? Restaurant.fromJson(response) : null;
     } catch (e) {
-      // If the restaurant is not found or an error occurs, return null
-      return null;
+      // Try assets if Supabase fails
+      try {
+        final restaurants = await getRestaurantsFromAssets();
+        return restaurants.firstWhere((r) => r.id == id);
+      } catch (_) {
+        return null;
+      }
+    }
+  }
+
+  // Get restaurants by city (from assets)
+  Future<List<Restaurant>> getRestaurantsByCity(String city) async {
+    try {
+      final restaurants = await getRestaurantsFromAssets();
+      return restaurants.where((r) => r.city.toLowerCase() == city.toLowerCase()).toList();
+    } catch (e) {
+      throw Exception('Failed to load restaurants by city: $e');
+    }
+  }
+
+  // Search restaurants by query (from assets)
+  Future<List<Restaurant>> searchRestaurants(String query) async {
+    try {
+      final restaurants = await getRestaurantsFromAssets();
+      final lowerQuery = query.toLowerCase();
+      return restaurants.where((r) =>
+          r.name.toLowerCase().contains(lowerQuery) ||
+          (r.cuisine?.toLowerCase().contains(lowerQuery) ?? false) ||
+          (r.category?.toLowerCase().contains(lowerQuery) ?? false)
+      ).toList();
+    } catch (e) {
+      throw Exception('Failed to search restaurants: $e');
     }
   }
 
@@ -97,21 +137,11 @@ class RestaurantService {
     }
   }
 
-  // Get all unique cities
+  // Get all unique cities (from assets)
   Future<List<String>> getCities() async {
     try {
-      final user = _supabase.auth.currentUser;
-      if (user == null) throw Exception('User not logged in');
-
-      final response = await _supabase
-          .from('restaurants')
-          .select('city')
-          .eq('user_id', user.id);
-
-      final cities = (response as List)
-          .map((json) => json['city'] as String)
-          .toSet()
-          .toList();
+      final restaurants = await getRestaurantsFromAssets();
+      final cities = restaurants.map((r) => r.city).toSet().toList();
       cities.sort();
       return cities;
     } catch (e) {

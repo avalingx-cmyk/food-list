@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../models/restaurant_model.dart';
 import '../providers/restaurant_provider.dart';
 import 'restaurant_form_screen.dart';
+import 'restaurant_detail_screen.dart';
 
 class RestaurantListScreen extends ConsumerStatefulWidget {
   const RestaurantListScreen({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Restaurants'),
+        title: const Text('Restaurants (47)'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
@@ -91,83 +92,46 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
             itemBuilder: (context, index) {
               final restaurant = restaurants[index];
               return ListTile(
-                leading: const Icon(Icons.restaurant),
-                title: Text(restaurant.name),
-                subtitle: Text(restaurant.city),
-                trailing: PopupMenuButton<String>(
-                  onSelected: (value) async {
-                    if (value == 'edit') {
-                      await context.push('/restaurants/${restaurant.id}/edit');
-                      ref.refresh(restaurantsProvider);
-                    } else if (value == 'delete') {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Delete Restaurant'),
-                          content: Text(
-                              'Are you sure you want to delete ${restaurant.name}?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('Cancel'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                                await ref
-                                    .read(restaurantServiceProvider)
-                                    .deleteRestaurant(restaurant.id!);
-                                ref.refresh(restaurantsProvider);
-                              },
-                              child: const Text('Delete'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'edit',
-                      child: Text('Edit'),
+                leading: CircleAvatar(
+                  backgroundColor: Colors.blue.shade100,
+                  child: Text(
+                    restaurant.name.substring(0, 1).toUpperCase(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                title: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        restaurant.name,
+                        style: const TextStyle(fontWeight: FontWeight.w500),
+                      ),
                     ),
-                    const PopupMenuItem(
-                      value: 'delete',
-                      child: Text('Delete'),
-                    ),
+                    if (restaurant.rating != null) ...[
+                      const Icon(Icons.star, size: 16, color: Colors.amber),
+                      const SizedBox(width: 4),
+                      Text(
+                        restaurant.rating!.toStringAsFixed(1),
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
                   ],
                 ),
-                onTap: () {
-                  context.push('/restaurants/${restaurant.id}/edit');
-                },
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await context.push('/restaurants/add');
-          ref.refresh(restaurantsProvider);
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-          return ListView.builder(
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              final restaurant = restaurants[index];
-              return ListTile(
-                leading: const Icon(Icons.restaurant),
-                title: Text(restaurant.name),
-                subtitle: Text(restaurant.city),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(restaurant.city),
+                    if (restaurant.cuisine != null)
+                      Text(
+                        restaurant.cuisine!,
+                        style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                  ],
+                ),
                 trailing: PopupMenuButton<String>(
                   onSelected: (value) async {
                     if (value == 'edit') {
                       await context.push('/restaurants/${restaurant.id}/edit');
-                      // Refresh the list after returning from the edit screen
                       ref.refresh(restaurantsProvider);
                     } else if (value == 'delete') {
                       await showDialog(
@@ -218,7 +182,6 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await context.push('/restaurants/add');
-          // Refresh the list after returning from the form screen
           ref.refresh(restaurantsProvider);
         },
         child: const Icon(Icons.add),
