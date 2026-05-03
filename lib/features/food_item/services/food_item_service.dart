@@ -5,16 +5,20 @@ class FoodItemService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // Get all food items for a specific restaurant (for the current user)
-  Future<List<FoodItem>> getFoodItemsByRestaurant(String restaurantId, {String sortBy = 'created_at', bool ascending = false}) async {
+  Future<List<FoodItem>> getFoodItemsByRestaurant(String restaurantId, {String sortBy = 'created_at', bool ascending = false, String searchQuery = ''}) async {
     try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
 
-      final query = _supabase
+      var query = _supabase
           .from('food_items')
           .select()
           .eq('restaurant_id', restaurantId)
           .eq('user_id', user.id);
+
+      if (searchQuery.isNotEmpty) {
+        query = query.ilike('name', '%$searchQuery%');
+      }
 
       // Apply sorting based on sortBy parameter
       switch (sortBy) {
@@ -81,16 +85,39 @@ class FoodItemService {
     }
   }
 
-  // Get all food items for the current user (for explore tab)
-  Future<List<FoodItem>> getAllFoodItems({String sortBy = 'created_at', bool ascending = false}) async {
+  // Get a single food item by ID
+  Future<FoodItem?> getFoodItemById(String id) async {
     try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
 
-      final query = _supabase
+      final response = await _supabase
+          .from('food_items')
+          .select()
+          .eq('id', id)
+          .eq('user_id', user.id)
+          .single();
+
+      return FoodItem.fromJson(response);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Get all food items for the current user (for explore tab)
+  Future<List<FoodItem>> getAllFoodItems({String sortBy = 'created_at', bool ascending = false, String searchQuery = ''}) async {
+    try {
+      final user = _supabase.auth.currentUser;
+      if (user == null) throw Exception('User not logged in');
+
+      var query = _supabase
           .from('food_items')
           .select()
           .eq('user_id', user.id);
+
+      if (searchQuery.isNotEmpty) {
+        query = query.ilike('name', '%$searchQuery%');
+      }
 
       // Apply sorting based on sortBy parameter
       switch (sortBy) {

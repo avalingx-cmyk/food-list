@@ -7,15 +7,29 @@ final foodItemServiceProvider = Provider<FoodItemService>((ref) {
   return FoodItemService();
 });
 
+// Provider for fetching a single food item by ID
+final foodItemDetailProvider = FutureProvider.family<FoodItem?, String>((ref, id) async {
+  final service = ref.read(foodItemServiceProvider);
+  return service.getFoodItemById(id);
+});
+
 // StateNotifier for managing the list of food items for a specific restaurant
 class FoodItemsNotifier extends StateNotifier<AsyncValue<List<FoodItem>>> {
   final FoodItemService _foodItemService;
   final String _restaurantId;
   String _sortBy = 'created_at';
   bool _ascending = false;
+  String _searchQuery = '';
 
   FoodItemsNotifier(this._foodItemService, this._restaurantId)
       : super(const AsyncValue.loading()) {
+    _loadFoodItems();
+  }
+
+  String get searchQuery => _searchQuery;
+
+  void setSearchQuery(String query) {
+    _searchQuery = query;
     _loadFoodItems();
   }
 
@@ -32,6 +46,7 @@ class FoodItemsNotifier extends StateNotifier<AsyncValue<List<FoodItem>>> {
         _restaurantId,
         sortBy: _sortBy,
         ascending: _ascending,
+        searchQuery: _searchQuery,
       );
       state = AsyncValue.data(foodItems);
     } catch (e, stackTrace) {
@@ -82,8 +97,16 @@ class AllFoodItemsNotifier extends StateNotifier<AsyncValue<List<FoodItem>>> {
   final FoodItemService _foodItemService;
   String _sortBy = 'created_at';
   bool _ascending = false;
+  String _searchQuery = '';
 
   AllFoodItemsNotifier(this._foodItemService) : super(const AsyncValue.loading()) {
+    _loadAllFoodItems();
+  }
+
+  String get searchQuery => _searchQuery;
+
+  void setSearchQuery(String query) {
+    _searchQuery = query;
     _loadAllFoodItems();
   }
 
@@ -99,6 +122,7 @@ class AllFoodItemsNotifier extends StateNotifier<AsyncValue<List<FoodItem>>> {
       final foodItems = await _foodItemService.getAllFoodItems(
         sortBy: _sortBy,
         ascending: _ascending,
+        searchQuery: _searchQuery,
       );
       state = AsyncValue.data(foodItems);
     } catch (e, stackTrace) {

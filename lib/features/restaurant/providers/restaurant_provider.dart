@@ -14,10 +14,56 @@ final restaurantsProvider = StateNotifierProvider<RestaurantsNotifier, AsyncValu
 
 class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
   final RestaurantService _restaurantService;
+  String _searchQuery = '';
 
   RestaurantsNotifier(this._restaurantService) : super(const AsyncValue.loading()) {
     fetchRestaurants();
   }
+
+  String get searchQuery => _searchQuery;
+
+  void setSearchQuery(String query) {
+    _searchQuery = query;
+    fetchRestaurants();
+  }
+
+  Future<void> fetchRestaurants() async {
+    state = const AsyncValue.loading();
+    try {
+      final restaurants = await _restaurantService.getRestaurants(searchQuery: _searchQuery);
+      state = AsyncValue.data(restaurants);
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<void> addRestaurant(Restaurant restaurant) async {
+    try {
+      await _restaurantService.addRestaurant(restaurant);
+      await fetchRestaurants(); // Refresh the list
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<void> updateRestaurant(Restaurant restaurant) async {
+    try {
+      await _restaurantService.updateRestaurant(restaurant);
+      await fetchRestaurants(); // Refresh the list
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<void> deleteRestaurant(String id) async {
+    try {
+      await _restaurantService.deleteRestaurant(id);
+      await fetchRestaurants(); // Refresh the list
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+}
 
   Future<void> fetchRestaurants() async {
     state = const AsyncValue.loading();

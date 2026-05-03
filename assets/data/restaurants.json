@@ -1,0 +1,1427 @@
+{
+  "metadata": {
+    "lastUpdated": "2026-05-02",
+    "cities": [
+      "colombo",
+      "vavuniya",
+      "jaffna"
+    ],
+    "totalRestaurants": 47,
+    "sources": [
+      "Menueka.com",
+      "VisitSriLanka.ai",
+      "World-Prices.com",
+      "HikersBay",
+      "TripAdvisor",
+      "Google Reviews",
+      "Wanderlog",
+      "Wikivoyage",
+      "TravelTriangle",
+      "Booking.com",
+      "Uber Eats Sri Lanka",
+      "Karl Rock Blog",
+      "Style in Sri Lanka"
+    ],
+    "currency": "LKR",
+    "cityContext": {
+      "colombo": {
+        "foodItemPrices": {
+          "headers": [
+            "Item",
+            "Street/Local (LKR)",
+            "Mid-range (LKR)",
+            "Fine Dining (LKR)"
+          ],
+          "rows": [
+            [
+              "Rice & Curry",
+              "300–500",
+              "800–1,800",
+              "3,000–5,000"
+            ],
+            [
+              "Hoppers (each)",
+              "150–300",
+              "200–400",
+              "400–800"
+            ],
+            [
+              "Kottu Roti",
+              "400–800",
+              "800–1,500",
+              "—"
+            ],
+            [
+              "String Hoppers",
+              "200–400",
+              "300–600",
+              "500–1,000"
+            ],
+            [
+              "Crab Curry",
+              "800–1,500",
+              "2,000–4,000",
+              "5,000–15,000"
+            ],
+            [
+              "Grilled Fish",
+              "800–1,200",
+              "1,500–3,000",
+              "3,500–6,000"
+            ],
+            [
+              "Chicken Curry",
+              "300–600",
+              "800–1,500",
+              "2,000–3,500"
+            ],
+            [
+              "Fried Rice",
+              "300–600",
+              "700–1,200",
+              "1,500–2,500"
+            ],
+            [
+              "Fresh Juice",
+              "100–250",
+              "250–500",
+              "500–1,000"
+            ],
+            [
+              "King Coconut",
+              "50–100",
+              "100–200",
+              "200–400"
+            ]
+          ]
+        },
+        "costContext": [
+          "**Cheap restaurant meal:** ~LKR 1,000 (~$3.1 USD)",
+          "**3-course meal for two (mid-range):** ~LKR 7,000 (~$22 USD)",
+          "**Fast food combo (McDonald's etc.):** ~LKR 2,400 (~$7.5 USD)",
+          "**Local beer (0.5L draught):** ~LKR 600 (~$1.9 USD)",
+          "**Imported beer (0.33L):** ~LKR 900 (~$2.8 USD)",
+          "**Cappuccino:** ~LKR 710 (~$2.2 USD)",
+          "**Coke/Pepsi (0.33L):** ~LKR 205 (~$0.64 USD)",
+          "Colombo commands the highest food prices in Sri Lanka — 20–40% more than Kandy/Jaffna",
+          "Street food at Pettah Market: hoppers LKR 150–300, isso wade LKR 100–400",
+          "Tourist area premium: 300–500% markup vs local \"hotels\""
+        ],
+        "otherNotableRestaurants": {
+          "headers": [
+            "Restaurant",
+            "Rating",
+            "Cuisine",
+            "Price Range"
+          ],
+          "rows": [
+            [
+              "The King's Coconut",
+              "4.0/5",
+              "Sri Lankan, Seafood",
+              "$$"
+            ],
+            [
+              "Italian Supermarket",
+              "4.2/5",
+              "Italian, European",
+              "$$$"
+            ],
+            [
+              "Sampatha",
+              "3.9/5",
+              "Sri Lankan, Traditional",
+              "$"
+            ],
+            [
+              "ISSO (Seafood Chain)",
+              "4.1/5",
+              "Seafood",
+              "$$"
+            ]
+          ]
+        }
+      },
+      "vavuniya": {
+        "cityComparison": {
+          "headers": [
+            "City",
+            "Budget Meal (LKR)",
+            "Mid-Range Meal (LKR)",
+            "Fine Dining (LKR)"
+          ],
+          "rows": [
+            [
+              "Vavuniya",
+              "250–500",
+              "500–1,000",
+              "N/A"
+            ],
+            [
+              "Jaffna",
+              "300–600",
+              "600–1,500",
+              "3,000–7,500"
+            ],
+            [
+              "Colombo",
+              "500–1,000",
+              "1,200–4,000",
+              "5,000–20,000"
+            ]
+          ]
+        },
+        "localHotelPrices": {
+          "headers": [
+            "Item",
+            "Typical Price (LKR)"
+          ],
+          "rows": [
+            [
+              "Rice & Curry (lunch packet)",
+              "250–500"
+            ],
+            [
+              "Hoppers (each)",
+              "80–150"
+            ],
+            [
+              "String Hoppers with curry",
+              "150–300"
+            ],
+            [
+              "Kottu Roti",
+              "300–600"
+            ],
+            [
+              "Parotta with curry",
+              "250–450"
+            ],
+            [
+              "Dosa with sambar",
+              "150–300"
+            ],
+            [
+              "Tea",
+              "50–100"
+            ],
+            [
+              "Fresh Juice",
+              "100–200"
+            ]
+          ]
+        },
+        "overview": "Vavuniya is a transit town in the Northern Province of Sri Lanka, located on the A9 highway between Anuradhapura and Jaffna. It is a gateway to the Vanni region and serves mainly highway traffic and local residents. The dining scene is dominated by small local eateries (\"hotels\"), rest-house restaurants, and roadside stalls. There are no fine-dining establishments. Prices are among the lowest in Sri Lanka — roughly 30–50% cheaper than Colombo and 10–20% cheaper than Jaffna.",
+        "priceContext": [
+          "Vavuniya prices are approximately **30–50% lower than Colombo** and **10–20% lower than Jaffna**",
+          "A full rice & curry meal in a local \"hotel\": **LKR 250–500** (vs LKR 800–1,800 in Colombo mid-range)",
+          "Street food items (samosas, wade, short eats): **LKR 30–100** each",
+          "Fresh fruit juice from roadside vendors: **LKR 80–150**",
+          "Local \"hotel\" tea: **LKR 50–100**",
+          "Budget accommodation with breakfast included: **LKR 2,000–4,000/night**"
+        ]
+      }
+    }
+  },
+  "restaurants": [
+    {
+      "id": "colombo_1",
+      "city": "colombo",
+      "name": "Ministry of Crab",
+      "location": "Dutch Hospital Shopping Precinct, Colombo 01",
+      "cuisine": "Seafood, Sri Lankan",
+      "priceRange": "LKR 5,000 – 20,000 per person",
+      "hours": "12PM–11PM daily",
+      "features": "Asia's 50 Best Restaurants list, open kitchen, reservations recommended",
+      "signatureDishes": [
+        "Pepper Crab – LKR 5,000–8,000",
+        "Garlic Chili Crab – LKR 5,500–9,000",
+        "King Prawns in Curry Sauce – LKR 4,500–7,500"
+      ],
+      "userReviews": [
+        {
+          "text": "Sri Lanka's most iconic restaurant. The crab is legendary.\" – TripAdvisor (4.5/5, 2,500+ reviews)",
+          "rating": 4.5
+        },
+        {
+          "text": "Worth the splurge. Fresh lagoon crabs cooked to perfection.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Book ahead — walk-ins often wait 1+ hours.\" – Google",
+          "rating": null
+        }
+      ],
+      "sources": "Menueka.com, TripAdvisor, Google Reviews, Wanderlog",
+      "rating": 4.5,
+      "category": "Fine Dining"
+    },
+    {
+      "id": "colombo_2",
+      "city": "colombo",
+      "name": "Nuga Gama – Cinnamon Grand",
+      "location": "Cinnamon Grand Hotel, Colombo 03",
+      "cuisine": "Sri Lankan (Traditional Village Experience)",
+      "priceRange": "LKR 3,500 – 6,000 per person",
+      "hours": "Dinner daily",
+      "features": "200-year-old banyan tree setting, thatched huts, clay pot dining, buffet style",
+      "signatureDishes": [
+        "Traditional Rice & Curry Buffet – LKR 3,500–5,000",
+        "Hopper Station (egg hoppers, string hoppers) – included in buffet",
+        "Coconut Sambol & Spicy Chutneys – included"
+      ],
+      "userReviews": [
+        {
+          "text": "A village in the city — immersive and delicious.\" – Google (4.3/5)",
+          "rating": 4.3
+        },
+        {
+          "text": "Best place to try authentic Sri Lankan for the first time.\" – TripAdvisor",
+          "rating": null
+        }
+      ],
+      "sources": "Menueka.com, VisitSriLanka.ai",
+      "rating": 4.3,
+      "category": "Fine Dining"
+    },
+    {
+      "id": "colombo_3",
+      "city": "colombo",
+      "name": "The Lagoon – Cinnamon Grand",
+      "location": "Cinnamon Grand Hotel, Colombo 03",
+      "cuisine": "Seafood, Market Style",
+      "priceRange": "LKR 4,500 – 8,500 per person",
+      "hours": "12PM–3PM, 7PM–11PM daily",
+      "features": "Choose seafood from market display, pick cooking style (grilled/curried/fried/baked)",
+      "signatureDishes": [
+        "Lagoon Crab Curry – LKR 4,500–7,000",
+        "Grilled Lobster – LKR 6,000–8,500",
+        "Mixed Seafood Platter – LKR 5,500–8,000"
+      ],
+      "userReviews": [
+        {
+          "text": "Pick your catch, pick your sauce. Super fresh.\" – Google (4.3/5, 800+ reviews)",
+          "rating": 4.3
+        },
+        {
+          "text": "Great for groups — everyone gets what they want.\" – TripAdvisor",
+          "rating": null
+        }
+      ],
+      "sources": "Menueka.com, TripAdvisor",
+      "rating": 4.3,
+      "category": "Fine Dining"
+    },
+    {
+      "id": "colombo_4",
+      "city": "colombo",
+      "name": "Curry Leaf – Hilton Colombo",
+      "location": "Hilton Colombo, Colombo 01",
+      "cuisine": "Sri Lankan (Rice & Curry Buffet)",
+      "priceRange": "LKR 3,000 – 5,500 per person",
+      "hours": "Lunch & Dinner daily",
+      "features": "Buffet-style, elegant hotel setting",
+      "signatureDishes": [
+        "Traditional Rice & Curry Spread – LKR 3,000–4,500",
+        "String Hoppers with Coconut Sambol – included",
+        "Jaffna-style Crab Curry – included"
+      ],
+      "userReviews": [],
+      "sources": "Menueka.com",
+      "rating": null,
+      "category": "Fine Dining"
+    },
+    {
+      "id": "colombo_5",
+      "city": "colombo",
+      "name": "Nihonbashi",
+      "location": "31 Galle Road, Colombo 3",
+      "cuisine": "Japanese, Sushi",
+      "priceRange": "LKR 3,500+ per person",
+      "hours": "12PM–3PM, 6PM–11PM daily",
+      "features": "",
+      "signatureDishes": [
+        "Omakase – LKR 5,000–8,000",
+        "Sashimi Platter – LKR 3,500–5,500",
+        "Grilled Fish – LKR 3,000–4,500"
+      ],
+      "userReviews": [
+        {
+          "text": "Best Japanese in Sri Lanka. Authentic sushi.\" – Google (4.4/5, 1,200+ reviews)",
+          "rating": 4.4
+        }
+      ],
+      "sources": "Menueka.com, TripAdvisor",
+      "rating": 4.4,
+      "category": "Fine Dining"
+    },
+    {
+      "id": "colombo_6",
+      "city": "colombo",
+      "name": "Upali's by Nawaloka",
+      "location": "Town Hall, Colombo 07",
+      "cuisine": "Sri Lankan, Rice & Curry",
+      "priceRange": "LKR 2,000 – 4,000 per person",
+      "hours": "7AM–10PM daily",
+      "features": "Family-friendly, affordable authentic, buffet & à la carte",
+      "signatureDishes": [
+        "Jaffna-style Crab Curry – LKR 1,800–2,800",
+        "Mutton Curry with Pol Roti – LKR 1,200–1,800",
+        "Egg Hoppers – LKR 150–250 each",
+        "Rice & Curry Platter – LKR 1,200–2,000"
+      ],
+      "userReviews": [
+        {
+          "text": "Authentic flavors without the fine-dining price tag.\" – Google (4.2/5, 2,000+ reviews)",
+          "rating": 4.2
+        },
+        {
+          "text": "Great for families. Quick, fresh, affordable.\" – TripAdvisor",
+          "rating": null
+        }
+      ],
+      "sources": "Menueka.com, VisitSriLanka.ai, Wanderlog",
+      "rating": 4.2,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "colombo_7",
+      "city": "colombo",
+      "name": "Barefoot Garden Cafe",
+      "location": "704 Galle Road, Colombo 3",
+      "cuisine": "International, Healthy Options",
+      "priceRange": "LKR 1,000 – 1,800 per person",
+      "hours": "8AM–10PM daily",
+      "features": "Garden setting, vegetarian-friendly, organic options",
+      "signatureDishes": [
+        "Salads – LKR 800–1,200",
+        "Sandwiches – LKR 600–1,000",
+        "Smoothies – LKR 400–700",
+        "Rice Plates – LKR 1,000–1,500"
+      ],
+      "userReviews": [],
+      "sources": "Existing data, Google Reviews",
+      "rating": null,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "colombo_8",
+      "city": "colombo",
+      "name": "Pilawoos",
+      "location": "Galle Road, Colombo 04 (multiple locations)",
+      "cuisine": "Sri Lankan Street Food",
+      "priceRange": "LKR 800+ per person",
+      "hours": "Open late night",
+      "features": "",
+      "signatureDishes": [
+        "Cheese Kottu – LKR 800–1,200",
+        "Chicken Fried Rice – LKR 700–1,000"
+      ],
+      "userReviews": [
+        {
+          "text": "The most famous late-night spot in Colombo.\" – Google (4.0/5)",
+          "rating": 4.0
+        }
+      ],
+      "sources": "Menueka.com",
+      "rating": 4.0,
+      "category": "Budget & Street Food"
+    },
+    {
+      "id": "colombo_9",
+      "city": "colombo",
+      "name": "Green Cabin",
+      "location": "Colombo 03",
+      "cuisine": "Sri Lankan Traditional",
+      "priceRange": "LKR 700+ per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Rice & Curry – LKR 700–1,200",
+        "Hoppers – LKR 150–300",
+        "Short Eats – LKR 100–250"
+      ],
+      "userReviews": [],
+      "sources": "Menueka.com",
+      "rating": null,
+      "category": "Budget & Street Food"
+    },
+    {
+      "id": "colombo_10",
+      "city": "colombo",
+      "name": "Gami Gedara",
+      "location": "Colombo",
+      "cuisine": "Sri Lankan Village-style",
+      "priceRange": "LKR 500+ per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Traditional Rice & Curry – LKR 500–1,000"
+      ],
+      "userReviews": [],
+      "sources": "Menueka.com",
+      "rating": null,
+      "category": "Budget & Street Food"
+    },
+    {
+      "id": "vavuniya_11",
+      "city": "vavuniya",
+      "name": "Vavuniya Rest House Restaurant",
+      "location": "Vavuniya Rest House, Vavuniya Town Centre, A9 Highway",
+      "cuisine": "Sri Lankan / Tamil",
+      "priceRange": "LKR 500–1,500 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Chicken / Mutton Biriyani – LKR 600–950",
+        "Crab Curry (Jaffna style, when available) – LKR 1,200–2,000",
+        "Vegetable Thali – LKR 450–650",
+        "Dosa with Sambar & Chutney – LKR 250–400"
+      ],
+      "userReviews": [
+        {
+          "text": "Reliable roadside stop on the A9. Good biriyani and clean facilities.\" – Google (4.0/5)",
+          "rating": 4.0
+        },
+        {
+          "text": "Basic government rest house food, but the crab curry is respectable.\" – Wikivoyage (3.8/5)",
+          "rating": 3.8
+        },
+        {
+          "text": "A9 travellers depend on this spot — consistent quality.\" – Booking.com",
+          "rating": null
+        }
+      ],
+      "sources": "Wikivoyage Northern Province, Google Reviews, Booking.com",
+      "rating": 4.0,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "vavuniya_12",
+      "city": "vavuniya",
+      "name": "Aroma Restaurant Vavuniya",
+      "location": "No. 45 K.K.S. Road, Vavuniya Town",
+      "cuisine": "Sri Lankan / Indian",
+      "priceRange": "LKR 400–1,000 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Chicken Fried Rice – LKR 550–800",
+        "Nasi Goreng – LKR 600–850",
+        "Egg Kottu Roti – LKR 400–600",
+        "Milk Tea (Ginger / Plain) – LKR 80–120"
+      ],
+      "userReviews": [
+        {
+          "text": "Decent fried rice and kottu. Clean interior, friendly service.\" – Google (4.1/5)",
+          "rating": 4.1
+        },
+        {
+          "text": "Good value for travellers passing through Vavuniya.\" – TripAdvisor (4.0/5)",
+          "rating": 4.0
+        }
+      ],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": 4.1,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "vavuniya_13",
+      "city": "vavuniya",
+      "name": "SunCity Hotel & Restaurant",
+      "location": "12/1 Railway Station Road, Vavuniya",
+      "cuisine": "Sri Lankan / Chinese fusion",
+      "priceRange": "LKR 600–1,200 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Sweet & Sour Chicken – LKR 700–1,000",
+        "Mixed Fried Rice – LKR 600–900",
+        "Fresh Juice (Papaya / Watermelon / Lime) – LKR 150–250",
+        "Seafood Fried Noodles – LKR 800–1,100"
+      ],
+      "userReviews": [
+        {
+          "text": "Clean rooms and decent restaurant. The fried rice is the safest bet.\" – Booking.com / Google (4.0/5)",
+          "rating": 4.0
+        }
+      ],
+      "sources": "Booking.com, Google Reviews",
+      "rating": 4.0,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "vavuniya_14",
+      "city": "vavuniya",
+      "name": "Sri Tharaga Restaurant",
+      "location": "Mannar Road, Vavuniya (near bus stand)",
+      "cuisine": "Sri Lankan Tamil",
+      "priceRange": "LKR 300–800 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Parotta with Mutton Curry – LKR 350–550",
+        "Idli & Sambar – LKR 200–350 (breakfast)",
+        "Mutton Kottu – LKR 550–800",
+        "Banana Leaf Meals – LKR 400–600"
+      ],
+      "userReviews": [
+        {
+          "text": "Best Tamil food in Vavuniya town. The parotta is soft and the mutton curry is spicy.\" – Google (4.2/5)",
+          "rating": 4.2
+        },
+        {
+          "text": "A local favourite. Prices are very affordable.\" – Wikivoyage community (4.0/5)",
+          "rating": 4.0
+        }
+      ],
+      "sources": "Wikivoyage, Google Reviews",
+      "rating": 4.2,
+      "category": "Budget"
+    },
+    {
+      "id": "vavuniya_15",
+      "city": "vavuniya",
+      "name": "Vavuniya Bakery & Cafe",
+      "location": "Town Centre, Vavuniya",
+      "cuisine": "Cafe / Bakery",
+      "priceRange": "LKR 150–500 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Short Eats (Fish Roll, Vegetable Patties) – LKR 40–80 each",
+        "Sri Lankan Egg Hoppers – LKR 80–150",
+        "Fresh Milk Coffee – LKR 100–180",
+        "Butter Cake – LKR 60–120"
+      ],
+      "userReviews": [
+        {
+          "text": "Good morning stop before heading north. Fresh short eats.\" – Google (4.0/5)",
+          "rating": 4.0
+        }
+      ],
+      "sources": "Google Reviews, Wikivoyage",
+      "rating": 4.0,
+      "category": "Budget"
+    },
+    {
+      "id": "vavuniya_16",
+      "city": "vavuniya",
+      "name": "Highway Stop (A9 Roadside)",
+      "location": "A9 Highway between Vavuniya and Omanthai",
+      "cuisine": "Roadside Sri Lankan / Tamil",
+      "priceRange": "LKR 100–400 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Samosas (land-mine style) – LKR 30–50",
+        "Fresh Toddy (from Palmyrah) – LKR 100–200",
+        "Palmyrah-based snacks (Odiyal) – LKR 50–100",
+        "Lime Juice – LKR 80–150"
+      ],
+      "userReviews": [
+        {
+          "text": "Try the palmyrah snacks — an unusual local delicacy hard to find elsewhere.\" – Wikivoyage (3.8/5)",
+          "rating": 3.8
+        },
+        {
+          "text": "Cheapest meal on the highway. Samosas are fiery!\" – TripAdvisor (3.9/5)",
+          "rating": 3.9
+        }
+      ],
+      "sources": "Wikivoyage Northern Province, TripAdvisor",
+      "rating": 3.8,
+      "category": "Budget"
+    },
+    {
+      "id": "jaffna_17",
+      "city": "jaffna",
+      "name": "Malayan Cafe",
+      "location": "226-230 Hospital Rd, Jaffna",
+      "cuisine": "South Indian / Sri Lankan (Vegetarian)",
+      "priceRange": "LKR 150–400 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Masala Dosa – LKR 150–250",
+        "Idli & Vada with Sambar / Chutney – LKR 150–200",
+        "Wade (Vadai) – LKR 80–150",
+        "Boiled Milk / Tea – LKR 60–100",
+        "Jaffna-style Rice & Curry (Thali) – LKR 200–300"
+      ],
+      "userReviews": [
+        {
+          "text": "Budget friendly breakfast spot. Good dosa, string hoppers and wada in the morning.\" – Google (4.0/5)",
+          "rating": 4.0
+        },
+        {
+          "text": "A true Jaffna classic — authentic vegetarian heritage, no fusion gimmicks.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Crowded and noisy but food is good and fast. Parking can be challenging.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Running since early 20th century, old-world charm with communal wooden tables.\" – TravelTriangle",
+          "rating": null
+        }
+      ],
+      "sources": "Wikivoyage, Google Reviews, TravelTriangle, Style in Sri Lanka, Menueka.com",
+      "rating": 4.0,
+      "category": "Budget"
+    },
+    {
+      "id": "jaffna_18",
+      "city": "jaffna",
+      "name": "Mangos Indian Veg (Mangos)",
+      "location": "359 Temple Rd, Nallur, Jaffna",
+      "cuisine": "Indian / Sri Lankan (Vegetarian)",
+      "priceRange": "LKR 300–800 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Special Paper Masala Dosa – LKR 460",
+        "Paneer Paper Thosai – LKR 400–550",
+        "Chilli Kothu Parotta – LKR 300–450",
+        "Premium Thali (lunch) – LKR 250–400",
+        "Fresh Juice / Lassi – LKR 150–250"
+      ],
+      "userReviews": [
+        {
+          "text": "Best dosa in Jaffna — rich, drenched in ghee with cream cheese filling.\" – Google (4.0/5)",
+          "rating": 4.0
+        },
+        {
+          "text": "Lovely vegetarian restaurant with so many veg options. Clean, friendly staff.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Service mid at times; 10% mandatory service charge.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Energetic ambience with indoor and outdoor seating, great for families.\" – TravelTriangle",
+          "rating": null
+        }
+      ],
+      "sources": "Wikivoyage, Google Reviews, TravelTriangle, Karl Rock",
+      "rating": 4.0,
+      "category": "Vegetarian"
+    },
+    {
+      "id": "jaffna_19",
+      "city": "jaffna",
+      "name": "Rio Ice Cream",
+      "location": "37 Hospital Rd / Point Pedro Rd, Jaffna",
+      "cuisine": "Desserts / Ice Cream Parlour",
+      "priceRange": "LKR 200–450 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Hazelnut Ice Cream (vanilla in hard hazelnut shell) – LKR 350",
+        "Chocolate Sundae – LKR 250",
+        "Tropical Fruit Ice Creams (Mango, Pineapple) – LKR 200–350",
+        "Faluda (rose-infused milky drink with jelly & basil seeds) – LKR 250–350",
+        "Milkshakes – LKR 300–450"
+      ],
+      "userReviews": [
+        {
+          "text": "Best place for dessert in Jaffna — the original ice cream parlour.\" – Google (4.3/5)",
+          "rating": 4.3
+        },
+        {
+          "text": "Very busy but worth the wait. Mango tastes like it was picked from the tree.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Huge selection of flavours, great for families.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Legendary — creamy, delectable, a must-visit for all ages.\" – TravelTriangle",
+          "rating": null
+        }
+      ],
+      "sources": "Google Reviews, TravelTriangle, Style in Sri Lanka, Menueka.com",
+      "rating": 4.3,
+      "category": "Desserts & Ice Cream"
+    },
+    {
+      "id": "jaffna_20",
+      "city": "jaffna",
+      "name": "Akshathai / Nila",
+      "location": "282 Stanley Rd, Jaffna",
+      "cuisine": "Indian / Sri Lankan (Non-Veg & Veg)",
+      "priceRange": "LKR 300–1,200 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Jaffna Crab Curry – LKR 900–1,500",
+        "Mutton Biryani – LKR 600–900",
+        "Paneer Dosa / Masala Dosa – LKR 200–350",
+        "Ghee Roast Dosa – LKR 250–400",
+        "Tandoori Menu Items – LKR 400–700"
+      ],
+      "userReviews": [
+        {
+          "text": "Excellent food — both veg and non-veg. Impeccable service and fascinating flavours.\" – Google (4.0/5)",
+          "rating": 4.0
+        },
+        {
+          "text": "Warm hospitality and smart decor. Wide array of delicacies.\" – TravelTriangle",
+          "rating": null
+        },
+        {
+          "text": "Can get crowded at 12-2pm. Takeaway available.\" – Google",
+          "rating": null
+        }
+      ],
+      "sources": "Google Reviews, TravelTriangle",
+      "rating": 4.0,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_21",
+      "city": "jaffna",
+      "name": "Nallur Bhavan Vegetarian Restaurant",
+      "location": "250 Temple Rd, Jaffna (near Nallur Kovil)",
+      "cuisine": "Jaffna / Indian (Vegetarian)",
+      "priceRange": "LKR 150–350 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Rice & Curry Thali – LKR 150–250",
+        "Chilli Kothu Parotta – LKR 200–350",
+        "Ghee Onion Masala Dosa – LKR 250–350",
+        "Jaffna Sweets (Boonthi Laddu, Mysore Pak, Kesari, Munthiri Alva) – LKR 50–150"
+      ],
+      "userReviews": [
+        {
+          "text": "Best rice & curry I had in Jaffna — better than Mangos.\" – Google (4.1/5)",
+          "rating": 4.1
+        },
+        {
+          "text": "Amazing place, food is cheap, staff are friendly and portions are large.\" – Google",
+          "rating": null
+        }
+      ],
+      "sources": "Google Reviews, TravelTriangle, Style in Sri Lanka",
+      "rating": 4.1,
+      "category": "Budget"
+    },
+    {
+      "id": "jaffna_22",
+      "city": "jaffna",
+      "name": "Hotel Rolex",
+      "location": "212 Main St, Jaffna",
+      "cuisine": "Sri Lankan (Non-Vegetarian)",
+      "priceRange": "LKR 300–800 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Biriyani (Chicken / Mutton) – LKR 400–650",
+        "Jaffna Crab Curry – LKR 800–1,200",
+        "Fried Rice (Chicken / Veg) – LKR 350–500",
+        "Hoppers & String Hoppers with Curries – LKR 200–350",
+        "Fresh Juices – LKR 100–200"
+      ],
+      "userReviews": [
+        {
+          "text": "Best biriyani in Jaffna town. Portions are huge and price is reasonable.\" – Google (3.6/5)",
+          "rating": 3.6
+        },
+        {
+          "text": "Always packed. Getting a table can be difficult, but food is delicious.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Famous for biriyani varieties — a no-frills local favourite.\" – Wanderlog",
+          "rating": null
+        }
+      ],
+      "sources": "Google Reviews, TravelTriangle, Wanderlog",
+      "rating": 3.6,
+      "category": "Budget"
+    },
+    {
+      "id": "jaffna_23",
+      "city": "jaffna",
+      "name": "Green Grass Hotel & Restaurant",
+      "location": "33 Aseervatham Ln, Jaffna (A9 Road)",
+      "cuisine": "Sri Lankan / International",
+      "priceRange": "LKR 3,500–6,000 per person (full meal); LKR 600–1,500 à la carte",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Jaffna Crab Curry – LKR 900–1,500",
+        "Jaffna Mutton Curry – LKR 800–1,200",
+        "Chickpea & Aubergine Curry – LKR 400–600",
+        "Rice & Curry Platter – LKR 500–800",
+        "Steaks / Pasta / Western options – LKR 900–1,500"
+      ],
+      "userReviews": [
+        {
+          "text": "Food was excellent. Breakfast buffet had plenty of authentic Tamil food.\" – Google (3.7/5)",
+          "rating": 3.7
+        },
+        {
+          "text": "Crab curry and cucumber raita are favourites.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Famous for both locals and tourists. Spicy crab curry with rice or string hoppers.\" – Menueka.com",
+          "rating": null
+        }
+      ],
+      "sources": "Google Reviews, TravelTriangle, Style in Sri Lanka, Menueka.com",
+      "rating": 3.7,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_24",
+      "city": "jaffna",
+      "name": "Cosy Restaurant (also Cosy Hotel)",
+      "location": "Hospital Road / 229 Main St, Jaffna",
+      "cuisine": "Sri Lankan / Chinese",
+      "priceRange": "LKR 3,000–5,500 per person (if ordering crab curry); LKR 500–1,200 general",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Jaffna Crab Curry – LKR 3,000–5,500 (family-sized)",
+        "Biriyani (Chicken / Mutton) – LKR 500–750",
+        "Fried Rice (Keeri Samba rice) – LKR 450–650",
+        "Mutton Curry – LKR 700–950",
+        "Chicken Tandoori – LKR 550–750"
+      ],
+      "userReviews": [
+        {
+          "text": "Best crab curry I've had, full of rich flavours.\" – Google (3.6/5)",
+          "rating": 3.6
+        },
+        {
+          "text": "One of Jaffna's most popular family-style restaurants for authentic northern cuisine.\" – Menueka.com",
+          "rating": null
+        },
+        {
+          "text": "Generous portions, perfect for sharing, affordable compared to Colombo.\" – Menueka.com",
+          "rating": null
+        }
+      ],
+      "sources": "Google Reviews, TravelTriangle, Menueka.com",
+      "rating": 3.6,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_25",
+      "city": "jaffna",
+      "name": "North Gate by Jetwing (Restaurant)",
+      "location": "Station Road, Jaffna",
+      "cuisine": "Sri Lankan (Fine Dining / Northern)",
+      "priceRange": "LKR 4,500–7,500 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Premium Crab Curry (fresh lagoon crabs) – LKR 4,500–7,500",
+        "Served with dosai, appam, or rice"
+      ],
+      "userReviews": [
+        {
+          "text": "Refined dining experience with perfected spice blend.\" – Menueka.com",
+          "rating": null
+        },
+        {
+          "text": "Comfortable setting with modern ambience.\" – Menueka.com",
+          "rating": null
+        },
+        {
+          "text": "Among the most recommended for authentic crab curry.\" – Menueka.com",
+          "rating": null
+        }
+      ],
+      "sources": "Menueka.com, TripAdvisor",
+      "rating": null,
+      "category": "Fine Dining"
+    },
+    {
+      "id": "jaffna_26",
+      "city": "jaffna",
+      "name": "Jetwing Jaffna (Restaurant)",
+      "location": "37 Mahatma Gandhi Road, Jaffna",
+      "cuisine": "Sri Lankan (Luxury / Fine Dining)",
+      "priceRange": "LKR 4,500–7,500 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Weekly Jaffna Buffet – LKR 2,500–3,500 per person",
+        "Jaffna Crab Curry – LKR 1,500–2,500",
+        "Ulundu Vadai – LKR 400–600",
+        "Panangai Paniyaaram (dessert) – LKR 500–700",
+        "Palmyrah Arrack – LKR 600–900"
+      ],
+      "userReviews": [
+        {
+          "text": "Top luxury dining in Jaffna. The weekly buffet is a must for serious foodies.\" – Google (4.3/5)",
+          "rating": 4.3
+        },
+        {
+          "text": "Well-curated a la carte menu, beautiful rooftop bar, and great service.\" – Google",
+          "rating": null
+        },
+        {
+          "text": "Luxury version of traditional Jaffna dish — premium lagoon crabs.\" – Menueka.com",
+          "rating": null
+        }
+      ],
+      "sources": "Wikivoyage, Style in Sri Lanka, Google Reviews, Menueka.com",
+      "rating": 4.3,
+      "category": "Fine Dining"
+    },
+    {
+      "id": "jaffna_27",
+      "city": "jaffna",
+      "name": "Lavin's Vegetarian Family Restaurant",
+      "location": "43 Adiyapatham Rd, Jaffna",
+      "cuisine": "Indian / Sri Lankan (Vegetarian)",
+      "priceRange": "LKR 350–700 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Lavin's Special Dosa – LKR 450–550",
+        "Masala Chai – LKR 150–200",
+        "Paneer String Hopper Kottu – LKR 400–550",
+        "Madras Meal – LKR 350–500",
+        "Paneer Butter Masala – LKR 500–650"
+      ],
+      "userReviews": [
+        {
+          "text": "The dosa truly melts in your mouth. Masala chai was perfectly spiced.\" – Google (4.4/5)",
+          "rating": 4.4
+        },
+        {
+          "text": "Wide selection of Indian and Sri Lankan veg dishes. Flaky butter paratha amazing.\" – Google",
+          "rating": null
+        }
+      ],
+      "sources": "Google Reviews, TravelTriangle",
+      "rating": 4.4,
+      "category": "Vegetarian"
+    },
+    {
+      "id": "jaffna_28",
+      "city": "jaffna",
+      "name": "Amudham",
+      "location": "Jaffna",
+      "cuisine": "Sri Lankan / Jaffna Specialities",
+      "priceRange": "LKR 500–1,500 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [],
+      "userReviews": [
+        {
+          "text": "Rated #1 of 52 restaurants in Jaffna on TripAdvisor.\" – TripAdvisor (4.8/5, 57 reviews)",
+          "rating": 4.8
+        },
+        {
+          "text": "Outstanding northern cuisine.\" – TripAdvisor",
+          "rating": null
+        }
+      ],
+      "sources": "TripAdvisor",
+      "rating": 4.8,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_29",
+      "city": "jaffna",
+      "name": "Malayan Seafood Restaurant",
+      "location": "138 Palaly Rd, Jaffna",
+      "cuisine": "Seafood, Sri Lankan",
+      "priceRange": "LKR 600–1,200 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Jaffna Crab Curry – LKR 800–1,200",
+        "Grilled Prawns – LKR 700–1,000",
+        "Prawn Curry – LKR 600–900",
+        "Fish Curry – LKR 500–800"
+      ],
+      "userReviews": [
+        {
+          "text": "One of the few places for fresh seafood dishes in Jaffna.\" – TravelTriangle",
+          "rating": null
+        },
+        {
+          "text": "Spicy crab curry and grilled prawns are a must-try.\" – TravelTriangle",
+          "rating": null
+        }
+      ],
+      "sources": "TravelTriangle",
+      "rating": null,
+      "category": "Budget"
+    },
+    {
+      "id": "jaffna_30",
+      "city": "jaffna",
+      "name": "Vanni Inn Restaurant",
+      "location": "Jaffna (listed on Uber Eats Sri Lanka)",
+      "cuisine": "Sri Lankan / Jaffna",
+      "priceRange": "LKR 400–1,000 per person (estimated from delivery prices)",
+      "hours": "",
+      "features": "Delivery: Available via Uber Eats",
+      "signatureDishes": [],
+      "userReviews": [],
+      "sources": "Uber Eats Sri Lanka",
+      "rating": null,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_31",
+      "city": "jaffna",
+      "name": "Selam RR Biriyani – Jaffna",
+      "location": "Jaffna (listed on Uber Eats Sri Lanka)",
+      "cuisine": "Sri Lankan / Indian (Biriyani specialist)",
+      "priceRange": "LKR 350–800 per person (estimated)",
+      "hours": "",
+      "features": "Delivery: Available via Uber Eats",
+      "signatureDishes": [],
+      "userReviews": [],
+      "sources": "Uber Eats Sri Lanka",
+      "rating": null,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_32",
+      "city": "jaffna",
+      "name": "Valampuri Hotel (Restaurant)",
+      "location": "Near Jaffna Railway Station, 148 Station Rd",
+      "cuisine": "Sri Lankan (Jaffna Specialities)",
+      "priceRange": "LKR 500–1,500 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Jaffna Crab Curry – LKR 1,200–2,000",
+        "Jaffna Mutton Curry – LKR 700–1,100",
+        "Jaffna Style Rice & Curry (lunch special) – LKR 500–800"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, Karl Rock",
+      "rating": null,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_33",
+      "city": "jaffna",
+      "name": "Lingan Cream House",
+      "location": "32 Stanley Rd, Jaffna",
+      "cuisine": "Desserts / Ice Cream",
+      "priceRange": "LKR 150–450 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Ice Cream (various flavours) – LKR 150–350",
+        "Sundaes – LKR 250–450",
+        "Milkshakes – LKR 200–400"
+      ],
+      "userReviews": [
+        {
+          "text": "Another much-talked-about ice cream parlour with high-quality ingredients.\" – TravelTriangle",
+          "rating": null
+        }
+      ],
+      "sources": "TravelTriangle",
+      "rating": null,
+      "category": "Desserts & Ice Cream"
+    },
+    {
+      "id": "jaffna_34",
+      "city": "jaffna",
+      "name": "U.S. Restaurant",
+      "location": "855 Hospital St, Jaffna",
+      "cuisine": "American / Sri Lankan",
+      "priceRange": "LKR 300–700 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Dosa 5-Set (with sambar & chutney) – LKR 300–400",
+        "Egg Kottu – LKR 300–400",
+        "Fried Chicken / Burgers – LKR 450–650"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, Karl Rock",
+      "rating": null,
+      "category": "Budget"
+    },
+    {
+      "id": "jaffna_35",
+      "city": "jaffna",
+      "name": "Saffron Hotel & Restaurant",
+      "location": "174a Palali Road, Kondavil, Jaffna",
+      "cuisine": "Chinese / Sri Lankan",
+      "priceRange": "LKR 450–1,000 per person (10% service charge applies)",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Mixed Fried Rice – LKR 450–650",
+        "Jaffna Crab Curry – LKR 900–1,400",
+        "Noodles / Stir-fries – LKR 400–600"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TravelTriangle",
+      "rating": null,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "jaffna_36",
+      "city": "jaffna",
+      "name": "Zoco Jaffna",
+      "location": "Science Hall Road (Opp People's Bank), Kannathiddy Junction, Jaffna",
+      "cuisine": "Contemporary Sri Lankan",
+      "priceRange": "LKR 700–1,500 per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Fusion Sri Lankan Tapas – LKR 600–900",
+        "Signature Cocktails & Mocktails – LKR 500–800",
+        "Grilled Seafood Platters – LKR 1,000–1,500"
+      ],
+      "userReviews": [
+        {
+          "text": "Excellent food, atmosphere and service. One of the best rated in Jaffna.\" – Google (4.7/5)",
+          "rating": 4.7
+        }
+      ],
+      "sources": "Evendo, Google Reviews",
+      "rating": 4.7,
+      "category": "Mid-Range"
+    },
+    {
+      "id": "colombo_37",
+      "city": "colombo",
+      "name": "Giovanni's",
+      "location": "Colombo",
+      "cuisine": "Italian (wood-fired pizza, pasta)",
+      "priceRange": "LKR 2,500+ per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Wood-fired Pizza – LKR 1,800–3,000",
+        "Pasta (various) – LKR 2,000–3,500"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": null,
+      "category": "International Dining"
+    },
+    {
+      "id": "colombo_38",
+      "city": "colombo",
+      "name": "Flower Drum",
+      "location": "Colombo",
+      "cuisine": "Chinese",
+      "priceRange": "LKR 2,000+ per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Dim Sum Platter – LKR 1,200–2,000",
+        "Sweet & Sour Pork – LKR 1,500–2,500",
+        "Fried Rice / Noodles – LKR 800–1,500"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": null,
+      "category": "International Dining"
+    },
+    {
+      "id": "colombo_39",
+      "city": "colombo",
+      "name": "Chutneys",
+      "location": "Colombo",
+      "cuisine": "South Indian (dosa, thali)",
+      "priceRange": "LKR 1,800+ per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Masala Dosa – LKR 400–700",
+        "South Indian Thali – LKR 1,200–2,000",
+        "Filter Coffee – LKR 150–250"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": null,
+      "category": "International Dining"
+    },
+    {
+      "id": "colombo_40",
+      "city": "colombo",
+      "name": "Kandoori",
+      "location": "Colombo",
+      "cuisine": "Indian, Chinese, Western, Sri Lankan",
+      "priceRange": "LKR 1,500+ per person",
+      "hours": "",
+      "features": "Multi-cuisine menu",
+      "signatureDishes": [
+        "Butter Chicken – LKR 1,200–1,800",
+        "Hoppers with Curry – LKR 300–600",
+        "Mixed Fried Rice – LKR 800–1,200"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": null,
+      "category": "International Dining"
+    },
+    {
+      "id": "colombo_41",
+      "city": "colombo",
+      "name": "Café on the 5th",
+      "location": "Colombo",
+      "cuisine": "Fusion",
+      "priceRange": "LKR 1,500+ per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Fusion Rice Bowls – LKR 1,000–1,800",
+        "Signature Wraps – LKR 800–1,500",
+        "Smoothies & Beverages – LKR 400–700"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": null,
+      "category": "International Dining"
+    },
+    {
+      "id": "colombo_42",
+      "city": "colombo",
+      "name": "Seoul Kitchen",
+      "location": "Colombo",
+      "cuisine": "Korean, BBQ",
+      "priceRange": "LKR 1,500+ per person",
+      "hours": "",
+      "features": "Table-top BBQ",
+      "signatureDishes": [
+        "Korean BBQ (bulgogi, galbi) – LKR 2,000–3,500",
+        "Kimchi Stew – LKR 1,200–1,800",
+        "Bibimbap – LKR 1,000–1,500"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": null,
+      "category": "International Dining"
+    },
+    {
+      "id": "colombo_43",
+      "city": "colombo",
+      "name": "Mughal Darbar",
+      "location": "Colombo",
+      "cuisine": "Indian, Mughlai",
+      "priceRange": "LKR 1,200+ per person",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Mutton Biryani – LKR 1,000–1,800",
+        "Chicken Tikka Masala – LKR 1,200–1,800",
+        "Naan & Roti – LKR 200–400"
+      ],
+      "userReviews": [],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": null,
+      "category": "International Dining"
+    },
+    {
+      "id": "colombo_44",
+      "city": "colombo",
+      "name": "The King's Coconut",
+      "location": "Colombo",
+      "cuisine": "Sri Lankan, Seafood",
+      "priceRange": "LKR 1,500–3,000 per person ($$)",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Seafood Rice & Curry – LKR 1,200–2,000",
+        "Grilled Prawns – LKR 1,500–2,500",
+        "Coconut Sambol & Crab – LKR 1,800–3,000"
+      ],
+      "userReviews": [
+        {
+          "text": "Good Sri Lankan seafood spot with a local vibe.\" – Google (4.0/5)",
+          "rating": 4.0
+        }
+      ],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": 4.0,
+      "category": "Other Notable"
+    },
+    {
+      "id": "colombo_45",
+      "city": "colombo",
+      "name": "Italian Supermarket",
+      "location": "Colombo",
+      "cuisine": "Italian, European",
+      "priceRange": "LKR 3,000–5,500 per person ($$$)",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Artisan Pasta – LKR 2,500–4,000",
+        "Wood-fired Pizza – LKR 2,000–3,500",
+        "European Cheese Platter – LKR 3,000–5,000"
+      ],
+      "userReviews": [
+        {
+          "text": "Authentic Italian ingredients and ambience.\" – Google (4.2/5)",
+          "rating": 4.2
+        }
+      ],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": 4.2,
+      "category": "Other Notable"
+    },
+    {
+      "id": "colombo_46",
+      "city": "colombo",
+      "name": "Sampatha",
+      "location": "Colombo",
+      "cuisine": "Sri Lankan, Traditional",
+      "priceRange": "LKR 500–1,200 per person ($)",
+      "hours": "",
+      "features": "",
+      "signatureDishes": [
+        "Traditional Rice & Curry – LKR 500–900",
+        "String Hoppers with Coconut Sambol – LKR 200–400",
+        "Short Eats – LKR 50–150"
+      ],
+      "userReviews": [
+        {
+          "text": "Affordable traditional food for locals and visitors.\" – Google (3.9/5)",
+          "rating": 3.9
+        }
+      ],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": 3.9,
+      "category": "Other Notable"
+    },
+    {
+      "id": "colombo_47",
+      "city": "colombo",
+      "name": "ISSO (Seafood Chain)",
+      "location": "Colombo (multiple locations)",
+      "cuisine": "Seafood",
+      "priceRange": "LKR 1,000–2,500 per person ($$)",
+      "hours": "",
+      "features": "Seafood chain with updated menu (up to 20% price reductions Nov 2024)",
+      "signatureDishes": [
+        "Crab Curry – LKR 1,500–2,500",
+        "Grilled Fish – LKR 1,200–2,000",
+        "Prawn Curry – LKR 1,000–1,800"
+      ],
+      "userReviews": [
+        {
+          "text": "Popular seafood chain with consistent quality across outlets.\" – Google (4.1/5)",
+          "rating": 4.1
+        }
+      ],
+      "sources": "Google Reviews, TripAdvisor",
+      "rating": 4.1,
+      "category": "Other Notable"
+    }
+  ]
+}

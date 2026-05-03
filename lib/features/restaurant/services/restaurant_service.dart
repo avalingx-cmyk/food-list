@@ -5,16 +5,21 @@ class RestaurantService {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   // Get all restaurants for the current user
-  Future<List<Restaurant>> getRestaurants() async {
+  Future<List<Restaurant>> getRestaurants({String searchQuery = ''}) async {
     try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
 
-      final response = await _supabase
+      var query = _supabase
           .from('restaurants')
           .select()
-          .eq('user_id', user.id)
-          .order('created_at', ascending: false);
+          .eq('user_id', user.id);
+
+      if (searchQuery.isNotEmpty) {
+        query = query.or('name.ilike.%$searchQuery%,city.ilike.%$searchQuery%');
+      }
+
+      final response = await query.order('created_at', ascending: false);
 
       return (response as List)
           .map((json) => Restaurant.fromJson(json))
@@ -89,6 +94,28 @@ class RestaurantService {
       await _supabase.from('restaurants').delete().eq('id', id);
     } catch (e) {
       throw Exception('Failed to delete restaurant: $e');
+    }
+  }
+
+  // Get all unique cities
+  Future<List<String>> getCities() async {
+    try {
+      final user = _supabase.auth.currentUser;
+      if (user == null) throw Exception('User not logged in');
+
+      final response = await _supabase
+          .from('restaurants')
+          .select('city')
+          .eq('user_id', user.id);
+
+      final cities = (response as List)
+          .map((json) => json['city'] as String)
+          .toSet()
+          .toList();
+      cities.sort();
+      return cities;
+    } catch (e) {
+      return [];
     }
   }
 }
