@@ -8,11 +8,8 @@ import 'features/auth/screens/login_screen.dart';
 import 'features/auth/screens/signup_screen.dart';
 import 'features/restaurant/screens/restaurant_list_screen.dart';
 import 'features/restaurant/screens/restaurant_form_screen.dart';
-import 'features/restaurant/repositories/restaurant_repository.dart';
 import 'features/food_item/screens/food_list_screen.dart';
 import 'features/food_item/screens/food_item_form_screen.dart';
-import 'features/food_item/services/food_item_service.dart';
-import 'features/food_item/models/food_item_model.dart';
 import 'features/explore/screens/explore_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/city_screen.dart';
@@ -155,13 +152,11 @@ final GoRouter _router = GoRouter(
             GoRoute(
               path: ':restaurantId/food',
               name: 'food_list',
-              builder: (context, state) async {
+              builder: (context, state) {
                 final restaurantId = state.params['restaurantId']!;
-                final repository = RestaurantRepository.instance;
-                final restaurant = await repository.getById(restaurantId);
                 return FoodListScreen(
                   restaurantId: restaurantId,
-                  restaurantName: restaurant?.name ?? 'Restaurant',
+                  restaurantName: 'Restaurant',
                 );
               },
               routes: [
@@ -178,23 +173,12 @@ final GoRouter _router = GoRouter(
                 GoRoute(
                   path: ':foodId/edit',
                   name: 'food_edit',
-                  builder: (context, state) async {
+                  builder: (context, state) {
                     final restaurantId = state.params['restaurantId']!;
                     final foodId = state.params['foodId']!;
-                    final foodItemService = FoodItemService();
-                    final foodItems = await foodItemService.getFoodItemsByRestaurant(restaurantId);
-                    final foodItem = foodItems.firstWhere(
-                      (item) => item.id == foodId,
-                      orElse: () => FoodItem(
-                        id: foodId,
-                        restaurantId: restaurantId,
-                        name: '',
-                        price: 0,
-                      ),
-                    );
                     return FoodItemFormScreen(
                       restaurantId: restaurantId,
-                      foodItem: foodItem,
+                      foodId: foodId,
                     );
                   },
                 ),

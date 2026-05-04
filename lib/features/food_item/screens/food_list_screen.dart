@@ -226,5 +226,4 @@ class _FoodListScreenState extends ConsumerState<FoodListScreen> {
     );
   }
 }
-            },
             

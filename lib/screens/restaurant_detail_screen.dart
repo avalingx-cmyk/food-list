@@ -78,7 +78,7 @@ class _RestaurantDetailScreenState
                 const SizedBox(height: 16),
                 _buildInfoChips(restaurant),
                 const SizedBox(height: 24),
-                if (restaurant.features.isNotEmpty) ...[
+                if (restaurant.features != null && restaurant.features!.isNotEmpty) ...[
                   _buildSection(
                     title: 'About',
                     icon: Icons.info_outline,
