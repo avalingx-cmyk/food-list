@@ -8,11 +8,13 @@ import 'features/auth/screens/login_screen.dart';
 import 'features/auth/screens/signup_screen.dart';
 import 'features/restaurant/screens/restaurant_list_screen.dart';
 import 'features/restaurant/screens/restaurant_form_screen.dart';
+import 'features/restaurant/repositories/restaurant_repository.dart';
 import 'features/food_item/screens/food_list_screen.dart';
 import 'features/food_item/screens/food_item_form_screen.dart';
 import 'features/explore/screens/explore_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/city_screen.dart';
+import 'screens/restaurant_detail_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +107,21 @@ final GoRouter _router = GoRouter(
             final cityId = state.params['cityId']!;
             return CityScreen(cityId: cityId);
           },
+          routes: [
+            // Restaurant detail screen
+            GoRoute(
+              path: 'restaurant/:restaurantId',
+              name: 'restaurant_detail',
+              builder: (context, state) {
+                final cityId = state.params['cityId']!;
+                final restaurantId = state.params['restaurantId']!;
+                return RestaurantDetailScreen(
+                  cityId: cityId,
+                  restaurantId: restaurantId,
+                );
+              },
+            ),
+          ],
         ),
         // Explore tab
         GoRoute(
@@ -126,12 +143,10 @@ final GoRouter _router = GoRouter(
             GoRoute(
               path: ':restaurantId/edit',
               name: 'restaurant_edit',
-              builder: (context, state) async {
+              builder: (context, state) {
                 final restaurantId = state.params['restaurantId']!;
-                final restaurant = await SupabaseService().getRestaurantById(restaurantId);
                 return RestaurantFormScreen(
                   restaurantId: restaurantId,
-                  restaurant: restaurant,
                 );
               },
             ),
@@ -140,10 +155,11 @@ final GoRouter _router = GoRouter(
               name: 'food_list',
               builder: (context, state) async {
                 final restaurantId = state.params['restaurantId']!;
-                final restaurant = await SupabaseService().getRestaurantById(restaurantId);
+                final repository = RestaurantRepository.instance;
+                final restaurant = await repository.getById(restaurantId);
                 return FoodListScreen(
                   restaurantId: restaurantId,
-                  restaurantName: restaurant.name,
+                  restaurantName: restaurant?.name ?? 'Restaurant',
                 );
               },
               routes: [

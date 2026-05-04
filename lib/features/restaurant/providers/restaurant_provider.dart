@@ -1,43 +1,80 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/restaurant_service.dart';
 import '../models/restaurant_model.dart';
+import '../repositories/restaurant_repository.dart';
 
-// Provider for the restaurant service
 final restaurantServiceProvider = Provider<RestaurantService>((ref) {
   return RestaurantService();
 });
 
-// Provider for fetching and managing the list of restaurants (from Supabase with asset fallback)
-final restaurantsProvider = StateNotifierProvider<RestaurantsNotifier, AsyncValue<List<Restaurant>>>((ref) {
+final restaurantRepositoryProvider = Provider<RestaurantRepository>((ref) {
+  return RestaurantRepository.instance;
+});
+
+final restaurantsProvider =
+    StateNotifierProvider<RestaurantsNotifier, AsyncValue<List<RestaurantModel>>>(
+        (ref) {
   return RestaurantsNotifier(ref.read(restaurantServiceProvider));
 });
 
-class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
+class RestaurantsNotifier extends StateNotifier<AsyncValue<List<RestaurantModel>>> {
   final RestaurantService _restaurantService;
-  String _searchQuery = '';
+  RestaurantFilter _filter = const RestaurantFilter();
 
-  RestaurantsNotifier(this._restaurantService) : super(const AsyncValue.loading()) {
+  RestaurantsNotifier(this._restaurantService)
+      : super(const AsyncValue.loading()) {
     fetchRestaurants();
   }
 
-  String get searchQuery => _searchQuery;
+  RestaurantFilter get currentFilter => _filter;
+
+  void setFilter(RestaurantFilter filter) {
+    _filter = filter;
+    fetchRestaurants();
+  }
 
   void setSearchQuery(String query) {
-    _searchQuery = query;
+    _filter = _filter.copyWith(searchQuery: query);
+    fetchRestaurants();
+  }
+
+  void setCity(String? city) {
+    _filter = _filter.copyWith(city: city);
+    fetchRestaurants();
+  }
+
+  void setCategory(String? category) {
+    _filter = _filter.copyWith(category: category);
+    fetchRestaurants();
+  }
+
+  void setMinRating(double? minRating) {
+    _filter = _filter.copyWith(minRating: minRating);
+    fetchRestaurants();
+  }
+
+  void setPriceCategory(PriceCategory? priceCategory) {
+    _filter = _filter.copyWith(priceCategory: priceCategory);
+    fetchRestaurants();
+  }
+
+  void clearFilters() {
+    _filter = const RestaurantFilter();
     fetchRestaurants();
   }
 
   Future<void> fetchRestaurants() async {
     state = const AsyncValue.loading();
     try {
-      final restaurants = await _restaurantService.getRestaurantsFromAssets();
+      final repository = RestaurantRepository.instance;
+      final restaurants = await repository.filter(_filter);
       state = AsyncValue.data(restaurants);
     } catch (e, stackTrace) {
       state = AsyncValue.error(e, stackTrace);
     }
   }
 
-  Future<void> addRestaurant(Restaurant restaurant) async {
+  Future<void> addRestaurant(RestaurantModel restaurant) async {
     try {
       await _restaurantService.addRestaurant(restaurant);
       await fetchRestaurants();
@@ -46,7 +83,7 @@ class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
     }
   }
 
-  Future<void> updateRestaurant(Restaurant restaurant) async {
+  Future<void> updateRestaurant(RestaurantModel restaurant) async {
     try {
       await _restaurantService.updateRestaurant(restaurant);
       await fetchRestaurants();
@@ -65,26 +102,37 @@ class RestaurantsNotifier extends StateNotifier<AsyncValue<List<Restaurant>>> {
   }
 }
 
-// Provider for fetching a single restaurant by ID
-final restaurantDetailProvider = FutureProvider.family<Restaurant?, String>((ref, id) async {
-  final service = ref.read(restaurantServiceProvider);
-  return service.getRestaurantById(id);
+final restaurantDetailProvider =
+    FutureProvider.family<RestaurantModel?, String>((ref, id) async {
+  final repository = ref.read(restaurantRepositoryProvider);
+  return repository.getById(id);
 });
 
-// Provider for loading all restaurants from local JSON assets
-final restaurantAssetsProvider = FutureProvider<List<Restaurant>>((ref) async {
-  final service = ref.read(restaurantServiceProvider);
-  return service.getRestaurantsFromAssets();
+final restaurantAssetsProvider =
+    FutureProvider<List<RestaurantModel>>((ref) async {
+  final repository = ref.read(restaurantRepositoryProvider);
+  return repository.getAll();
 });
 
-// Provider for loading restaurants by city from assets
-final restaurantsByCityProvider = FutureProvider.family<List<Restaurant>, String>((ref, city) async {
-  final service = ref.read(restaurantServiceProvider);
-  return service.getRestaurantsByCity(city);
+final restaurantsByCityProvider =
+    FutureProvider.family<List<RestaurantModel>, String>((ref, city) async {
+  final repository = ref.read(restaurantRepositoryProvider);
+  return repository.getByCity(city);
 });
 
-// Provider for searching restaurants from assets
-final searchRestaurantsProvider = FutureProvider.family<List<Restaurant>, String>((ref, query) async {
-  final service = ref.read(restaurantServiceProvider);
-  return service.searchRestaurants(query);
+final searchRestaurantsProvider =
+    FutureProvider.family<List<RestaurantModel>, String>((ref, query) async {
+  final repository = ref.read(restaurantRepositoryProvider);
+  return repository.search(query);
+});
+
+final categoriesProvider = FutureProvider<List<String>>((ref) async {
+  final repository = ref.read(restaurantRepositoryProvider);
+  return repository.getCategories();
+});
+
+final topRatedRestaurantsProvider =
+    FutureProvider<List<RestaurantModel>>((ref) async {
+  final repository = ref.read(restaurantRepositoryProvider);
+  return repository.getTopRated();
 });

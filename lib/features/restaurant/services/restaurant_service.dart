@@ -1,25 +1,16 @@
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/restaurant_model.dart';
+import '../repositories/restaurant_repository.dart';
 
 class RestaurantService {
   final SupabaseClient _supabase = Supabase.instance.client;
+  final RestaurantRepository _repository = RestaurantRepository.instance;
 
-  // Get all restaurants from local JSON asset
-  Future<List<Restaurant>> getRestaurantsFromAssets() async {
-    try {
-      final jsonString = await rootBundle.loadString('assets/data/restaurants.json');
-      final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
-      final restaurants = jsonData['restaurants'] as List<dynamic>;
-      return restaurants.map((json) => Restaurant.fromJson(json as Map<String, dynamic>)).toList();
-    } catch (e) {
-      throw Exception('Failed to load restaurants from assets: $e');
-    }
+  Future<List<RestaurantModel>> getRestaurantsFromAssets() async {
+    return _repository.getAll();
   }
 
-  // Get all restaurants for the current user (from Supabase)
-  Future<List<Restaurant>> getRestaurants() async {
+  Future<List<RestaurantModel>> getRestaurants() async {
     try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
@@ -31,72 +22,44 @@ class RestaurantService {
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((json) => Restaurant.fromJson(json))
+          .map((json) => RestaurantModel.fromJson(json))
           .toList();
     } catch (e) {
-      // Fallback to assets if Supabase fails
       return getRestaurantsFromAssets();
     }
   }
 
-  // Get a restaurant by ID
-  Future<Restaurant?> getRestaurantById(String id) async {
+  Future<RestaurantModel?> getRestaurantById(String id) async {
+    try {
+      return await _repository.getById(id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<RestaurantModel>> getRestaurantsByCity(String city) async {
+    return _repository.getByCity(city);
+  }
+
+  Future<List<RestaurantModel>> searchRestaurants(String query) async {
+    return _repository.search(query);
+  }
+
+  Future<List<String>> getCities() async {
+    return _repository.getCities();
+  }
+
+  Future<List<String>> getCategories() async {
+    return _repository.getCategories();
+  }
+
+  Future<RestaurantModel> addRestaurant(RestaurantModel restaurant) async {
     try {
       final user = _supabase.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
 
-      final response = await _supabase
-          .from('restaurants')
-          .select()
-          .eq('id', id)
-          .eq('user_id', user.id)
-          .single();
-
-      return response != null ? Restaurant.fromJson(response) : null;
-    } catch (e) {
-      // Try assets if Supabase fails
-      try {
-        final restaurants = await getRestaurantsFromAssets();
-        return restaurants.firstWhere((r) => r.id == id);
-      } catch (_) {
-        return null;
-      }
-    }
-  }
-
-  // Get restaurants by city (from assets)
-  Future<List<Restaurant>> getRestaurantsByCity(String city) async {
-    try {
-      final restaurants = await getRestaurantsFromAssets();
-      return restaurants.where((r) => r.city.toLowerCase() == city.toLowerCase()).toList();
-    } catch (e) {
-      throw Exception('Failed to load restaurants by city: $e');
-    }
-  }
-
-  // Search restaurants by query (from assets)
-  Future<List<Restaurant>> searchRestaurants(String query) async {
-    try {
-      final restaurants = await getRestaurantsFromAssets();
-      final lowerQuery = query.toLowerCase();
-      return restaurants.where((r) =>
-          r.name.toLowerCase().contains(lowerQuery) ||
-          (r.cuisine?.toLowerCase().contains(lowerQuery) ?? false) ||
-          (r.category?.toLowerCase().contains(lowerQuery) ?? false)
-      ).toList();
-    } catch (e) {
-      throw Exception('Failed to search restaurants: $e');
-    }
-  }
-
-  // Add a new restaurant
-  Future<Restaurant> addRestaurant(Restaurant restaurant) async {
-    try {
-      final user = _supabase.auth.currentUser;
-      if (user == null) throw Exception('User not logged in');
-
-      final restaurantData = restaurant.toJson()
-        ..['user_id'] = user.id;
+      final restaurantData = restaurant.toJson();
+      restaurantData['user_id'] = user.id;
 
       final response = await _supabase
           .from('restaurants')
@@ -104,17 +67,14 @@ class RestaurantService {
           .select()
           .single();
 
-      return Restaurant.fromJson(response);
+      return RestaurantModel.fromJson(response);
     } catch (e) {
       throw Exception('Failed to add restaurant: $e');
     }
   }
 
-  // Update an existing restaurant
-  Future<Restaurant> updateRestaurant(Restaurant restaurant) async {
+  Future<RestaurantModel> updateRestaurant(RestaurantModel restaurant) async {
     try {
-      if (restaurant.id == null) throw Exception('Restaurant ID is required');
-
       final response = await _supabase
           .from('restaurants')
           .update(restaurant.toJson())
@@ -122,30 +82,17 @@ class RestaurantService {
           .select()
           .single();
 
-      return Restaurant.fromJson(response);
+      return RestaurantModel.fromJson(response);
     } catch (e) {
       throw Exception('Failed to update restaurant: $e');
     }
   }
 
-  // Delete a restaurant
   Future<void> deleteRestaurant(String id) async {
     try {
       await _supabase.from('restaurants').delete().eq('id', id);
     } catch (e) {
       throw Exception('Failed to delete restaurant: $e');
-    }
-  }
-
-  // Get all unique cities (from assets)
-  Future<List<String>> getCities() async {
-    try {
-      final restaurants = await getRestaurantsFromAssets();
-      final cities = restaurants.map((r) => r.city).toSet().toList();
-      cities.sort();
-      return cities;
-    } catch (e) {
-      return [];
     }
   }
 }

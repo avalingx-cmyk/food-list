@@ -150,7 +150,7 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
                                 Navigator.of(context).pop();
                                 await ref
                                     .read(restaurantServiceProvider)
-                                    .deleteRestaurant(restaurant.id!);
+                                    .deleteRestaurant(restaurant.id);
                                 ref.refresh(restaurantsProvider);
                               },
                               child: const Text('Delete'),

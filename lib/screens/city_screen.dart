@@ -1,23 +1,23 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/restaurant_card.dart';
 import '../features/restaurant/models/restaurant_model.dart';
+import '../features/restaurant/providers/restaurant_provider.dart';
 
-class CityScreen extends StatefulWidget {
+class CityScreen extends ConsumerStatefulWidget {
   final String cityId;
 
   const CityScreen({Key? key, required this.cityId}) : super(key: key);
 
   @override
-  State<CityScreen> createState() => _CityScreenState();
+  ConsumerState<CityScreen> createState() => _CityScreenState();
 }
 
-class _CityScreenState extends State<CityScreen> {
-  List<RestaurantModel> _restaurants = [];
-  bool _isLoading = true;
+class _CityScreenState extends ConsumerState<CityScreen> {
   String _searchQuery = '';
+  String? _selectedCategory;
+  double? _minRating;
 
   String get _cityName {
     switch (widget.cityId) {
@@ -33,44 +33,8 @@ class _CityScreenState extends State<CityScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _loadRestaurants();
-  }
-
-  Future<void> _loadRestaurants() async {
-    try {
-      final jsonString = await rootBundle.loadString('assets/data/restaurants.json');
-      final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
-      final restaurants = jsonData['restaurants'] as List<dynamic>;
-
-      final cityRestaurants = restaurants
-          .where((r) => r['city'] == widget.cityId)
-          .map((r) => RestaurantModel.fromJson(r as Map<String, dynamic>))
-          .toList();
-
-      setState(() {
-        _restaurants = cityRestaurants;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  List<RestaurantModel> get _filteredRestaurants {
-    if (_searchQuery.isEmpty) return _restaurants;
-    return _restaurants.where((r) {
-      return r.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          r.cuisine.toLowerCase().contains(_searchQuery.toLowerCase());
-    }).toList();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final filteredRestaurants = _filteredRestaurants;
+    final restaurantsAsync = ref.watch(restaurantsByCityProvider(widget.cityId));
 
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +42,6 @@ class _CityScreenState extends State<CityScreen> {
       ),
       body: Column(
         children: [
-          // Search bar
           Padding(
             padding: const EdgeInsets.all(16),
             child: TextField(
@@ -89,7 +52,8 @@ class _CityScreenState extends State<CityScreen> {
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
                         icon: const Icon(Icons.clear),
-                        onPressed: () => setState(() => _searchQuery = ''),
+                        onPressed: () =>
+                            setState(() => _searchQuery = ''),
                       )
                     : null,
                 filled: true,
@@ -101,56 +65,148 @@ class _CityScreenState extends State<CityScreen> {
               ),
             ),
           ),
-          // Restaurant count
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SizedBox(
+              height: 40,
+              child: ref.watch(categoriesProvider).when(
+                    data: (categories) => ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categories.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: FilterChip(
+                              label: const Text('All'),
+                              selected: _selectedCategory == null,
+                              onSelected: (_) =>
+                                  setState(() => _selectedCategory = null),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.surface,
+                              selectedColor: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.2),
+                            ),
+                          );
+                        }
+                        final category = categories[index - 1];
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: FilterChip(
+                            label: Text(category),
+                            selected: _selectedCategory == category,
+                            onSelected: (_) => setState(() =>
+                                _selectedCategory =
+                                    _selectedCategory == category
+                                        ? null
+                                        : category),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surface,
+                            selectedColor: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.2),
+                          ),
+                        );
+                      },
+                    ),
+                    loading: () => const SizedBox.shrink(),
+                    error: (_, __) => const SizedBox.shrink(),
+                  ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               children: [
                 Text(
-                  '${filteredRestaurants.length} restaurants found',
+                  'Min Rating:',
                   style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(width: 8),
+                DropdownButton<double?>(
+                  value: _minRating,
+                  items: [null, 3.0, 3.5, 4.0, 4.5]
+                      .map((v) => DropdownMenuItem<double?>(
+                            value: v,
+                            child: Text(v == null ? 'Any' : '${v.toStringAsFixed(1)}+'),
+                          ))
+                      .toList(),
+                  onChanged: (v) => setState(() => _minRating = v),
+                  underline: const SizedBox.shrink(),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
-          // Restaurant list
           Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : filteredRestaurants.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.restaurant,
-                              size: 64,
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              _searchQuery.isEmpty
-                                  ? 'No restaurants found in $_cityName'
-                                  : 'No restaurants match your search',
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+            child: restaurantsAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (e, _) => Center(child: Text('Error: $e')),
+              data: (restaurants) {
+                var filtered = restaurants;
+                if (_searchQuery.isNotEmpty) {
+                  final q = _searchQuery.toLowerCase();
+                  filtered = filtered.where((r) {
+                    return r.name.toLowerCase().contains(q) ||
+                        (r.cuisine?.toLowerCase().contains(q) ?? false) ||
+                        (r.category?.toLowerCase().contains(q) ?? false);
+                  }).toList();
+                }
+                if (_selectedCategory != null) {
+                  filtered = filtered
+                      .where((r) => r.category == _selectedCategory)
+                      .toList();
+                }
+                if (_minRating != null) {
+                  filtered = filtered.where((r) {
+                    final rating = r.rating ?? r.averageReviewRating;
+                    return rating != null && rating >= _minRating!;
+                  }).toList();
+                }
+
+                if (filtered.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.restaurant,
+                          size: 64,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.5),
                         ),
-                      )
-                    : ListView.builder(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        itemCount: filteredRestaurants.length,
-                        itemBuilder: (context, index) {
-                          final restaurant = filteredRestaurants[index];
-                          return RestaurantCard(
-                            restaurant: restaurant,
-                            onTap: () {
-                              context.push('/city/${widget.cityId}/restaurant/${restaurant.id}');
-                            },
-                          );
-                        },
-                      ),
+                        const SizedBox(height: 16),
+                        Text(
+                          _searchQuery.isEmpty && _selectedCategory == null
+                              ? 'No restaurants found in $_cityName'
+                              : 'No restaurants match your filters',
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  itemCount: filtered.length,
+                  itemBuilder: (context, index) {
+                    final restaurant = filtered[index];
+                    return RestaurantCard(
+                      restaurant: restaurant,
+                      onTap: () {
+                        context.push(
+                            '/city/${widget.cityId}/restaurant/${restaurant.id}');
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),

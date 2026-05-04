@@ -23,7 +23,6 @@ class RestaurantCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Restaurant image placeholder
               Container(
                 width: 80,
                 height: 80,
@@ -38,7 +37,6 @@ class RestaurantCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              // Restaurant details
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,15 +49,28 @@ class RestaurantCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      restaurant.cuisine,
+                      restaurant.cuisine ?? 'Various',
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    if (restaurant.location != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        restaurant.location!,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withOpacity(0.6),
+                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        // Rating
                         if (restaurant.rating != null) ...[
                           Icon(
                             Icons.star,
@@ -73,33 +84,45 @@ class RestaurantCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                         ],
-                        // Price range
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(4),
+                        if (restaurant.priceRange != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              restaurant.priceRange!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                            ),
                           ),
-                          child: Text(
-                            restaurant.priceRange,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                          ),
-                        ),
                         const Spacer(),
-                        // Category chip
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(4),
+                        if (restaurant.category != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondary
+                                  .withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              restaurant.category!,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
                           ),
-                          child: Text(
-                            restaurant.category,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ),
                       ],
                     ),
                   ],

@@ -74,8 +74,8 @@ class _RestaurantFormScreenState extends ConsumerState<RestaurantFormScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final restaurant = Restaurant(
-        id: widget.restaurantId,
+      final restaurant = RestaurantModel(
+        id: widget.restaurantId ?? '',
         name: _nameController.text.trim(),
         city: _cityController.text.trim(),
       );

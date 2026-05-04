@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../food_item/providers/food_item_provider.dart';
 import '../../food_item/models/food_item_model.dart';
-import '../../restaurant/services/restaurant_service.dart';
+import '../../restaurant/repositories/restaurant_repository.dart';
 import '../../restaurant/models/restaurant_model.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
@@ -26,7 +26,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
 
   Future<void> _loadCities() async {
     try {
-      final cities = await RestaurantService().getCities();
+      final cities = await RestaurantRepository.instance.getCities();
       if (mounted) {
         setState(() {
           _cities = ['All', ...cities];

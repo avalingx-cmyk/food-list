@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/restaurant_provider.dart';
 import '../models/restaurant_model.dart';
-import '../../food_item/screens/food_list_screen.dart';
 
 class RestaurantDetailScreen extends ConsumerWidget {
   final String restaurantId;
@@ -29,7 +28,8 @@ class RestaurantDetailScreen extends ConsumerWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Delete Restaurant'),
-                  content: const Text('Are you sure you want to delete this restaurant? All associated food items will also be deleted.'),
+                  content: const Text(
+                      'Are you sure you want to delete this restaurant? All associated food items will also be deleted.'),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
@@ -37,14 +37,17 @@ class RestaurantDetailScreen extends ConsumerWidget {
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                      child: const Text('Delete',
+                          style: TextStyle(color: Colors.red)),
                     ),
                   ],
                 ),
               );
 
               if (confirm == true) {
-                await ref.read(restaurantsProvider.notifier).deleteRestaurant(restaurantId);
+                await ref
+                    .read(restaurantsProvider.notifier)
+                    .deleteRestaurant(restaurantId);
                 if (context.mounted) context.go('/restaurants');
               }
             },
@@ -100,7 +103,9 @@ class RestaurantDetailScreen extends ConsumerWidget {
                 ],
                 if (restaurant.category != null) ...[
                   const SizedBox(height: 8),
-                  Chip(label: Text(restaurant.category!), avatar: const Icon(Icons.restaurant_menu, size: 16)),
+                  Chip(
+                      label: Text(restaurant.category!),
+                      avatar: const Icon(Icons.restaurant_menu, size: 16)),
                 ],
                 if (restaurant.priceRange != null) ...[
                   const SizedBox(height: 8),
@@ -112,7 +117,8 @@ class RestaurantDetailScreen extends ConsumerWidget {
                     ],
                   ),
                 ],
-                if (restaurant.hours != null) ...[
+                if (restaurant.hours != null &&
+                    restaurant.hours!.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -122,33 +128,37 @@ class RestaurantDetailScreen extends ConsumerWidget {
                     ],
                   ),
                 ],
-                if (restaurant.features != null) ...[
+                if (restaurant.features != null &&
+                    restaurant.features!.isNotEmpty) ...[
                   const SizedBox(height: 16),
-                  Text('Features', style: Theme.of(context).textTheme.titleLarge),
+                  Text('Features',
+                      style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
                   Text(restaurant.features!),
                 ],
-                if (restaurant.signatureDishes != null && restaurant.signatureDishes!.isNotEmpty) ...[
+                if (restaurant.signatureDishes.isNotEmpty) ...[
                   const SizedBox(height: 16),
-                  Text('Signature Dishes', style: Theme.of(context).textTheme.titleLarge),
+                  Text('Signature Dishes',
+                      style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
-                  ...restaurant.signatureDishes!.map((dish) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('• ', style: TextStyle(fontWeight: FontWeight.bold)),
-                        Expanded(child: Text(dish)),
-                      ],
-                    ),
-                  )),
+                  ...restaurant.signatureDishes.map((dish) => Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('\u2022 ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Expanded(child: Text(dish)),
+                          ],
+                        ),
+                      )),
                 ],
-                if (restaurant.userReviews != null && restaurant.userReviews!.isNotEmpty) ...[
+                if (restaurant.userReviews.isNotEmpty) ...[
                   const SizedBox(height: 16),
-                  Text('User Reviews', style: Theme.of(context).textTheme.titleLarge),
+                  Text('User Reviews',
+                      style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
-                  ...restaurant.userReviews!.map((review) {
-                    final r = review as Map<String, dynamic>;
+                  ...restaurant.userReviews.map((review) {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8),
                       child: Padding(
@@ -156,17 +166,21 @@ class RestaurantDetailScreen extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            if (r['rating'] != null)
+                            if (review.rating != null)
                               Row(
                                 children: List.generate(
-                                  r['rating'],
-                                  (index) => const Icon(Icons.star, size: 16, color: Colors.amber),
+                                  5,
+                                  (i) => Icon(
+                                    i < review.rating!.round()
+                                        ? Icons.star
+                                        : Icons.star_border,
+                                    size: 16,
+                                    color: Colors.amber,
+                                  ),
                                 ),
                               ),
-                            if (r['text'] != null) ...[
-                              const SizedBox(height: 4),
-                              Text(r['text']),
-                            ],
+                            const SizedBox(height: 4),
+                            Text(review.text),
                           ],
                         ),
                       ),
@@ -175,7 +189,8 @@ class RestaurantDetailScreen extends ConsumerWidget {
                 ],
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: () => context.go('/restaurants/$restaurantId/food'),
+                  onPressed: () =>
+                      context.go('/restaurants/$restaurantId/food'),
                   child: const Text('View Food Items'),
                 ),
               ],

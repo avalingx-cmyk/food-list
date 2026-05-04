@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../models/city.dart';
 import '../core/theme/app_theme.dart';
-import '../features/restaurant/models/restaurant_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   static final List<City> cities = [
-    City.fromJson('colombo', 'Colombo', 15),
+    City.fromJson('colombo', 'Colombo', 21),
     City.fromJson('vavuniya', 'Vavuniya', 6),
-    City.fromJson('jaffna', 'Jaffna', 18),
+    City.fromJson('jaffna', 'Jaffna', 20),
   ];
 
   @override

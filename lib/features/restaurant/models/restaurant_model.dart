@@ -1,5 +1,28 @@
-class Restaurant {
-  final String? id;
+class UserReview {
+  final String text;
+  final double? rating;
+
+  UserReview({required this.text, this.rating});
+
+  factory UserReview.fromJson(Map<String, dynamic> json) {
+    return UserReview(
+      text: json['text'] as String? ?? '',
+      rating: json['rating'] != null ? (json['rating'] as num).toDouble() : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'text': text,
+      if (rating != null) 'rating': rating,
+    };
+  }
+}
+
+enum PriceCategory { budget, midRange, fineDining, unknown }
+
+class RestaurantModel {
+  final String id;
   final String name;
   final String city;
   final String? location;
@@ -7,16 +30,16 @@ class Restaurant {
   final String? priceRange;
   final String? hours;
   final String? features;
-  final List<String>? signatureDishes;
-  final List<dynamic>? userReviews;
+  final List<String> signatureDishes;
+  final List<UserReview> userReviews;
   final String? sources;
   final double? rating;
   final String? category;
   final String? userId;
   final DateTime? createdAt;
 
-  Restaurant({
-    this.id,
+  RestaurantModel({
+    required this.id,
     required this.name,
     required this.city,
     this.location,
@@ -24,8 +47,8 @@ class Restaurant {
     this.priceRange,
     this.hours,
     this.features,
-    this.signatureDishes,
-    this.userReviews,
+    this.signatureDishes = const [],
+    this.userReviews = const [],
     this.sources,
     this.rating,
     this.category,
@@ -33,30 +56,29 @@ class Restaurant {
     this.createdAt,
   });
 
-  // Convert to JSON for Supabase
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'city': city,
-      'location': location,
-      'cuisine': cuisine,
-      'price_range': priceRange,
-      'hours': hours,
-      'features': features,
-      'signature_dishes': signatureDishes,
-      'user_reviews': userReviews,
-      'sources': sources,
-      'rating': rating,
-      'category': category,
-      'user_id': userId,
-      'created_at': createdAt?.toIso8601String(),
-    };
+  PriceCategory get priceCategory {
+    if (category == null) return PriceCategory.unknown;
+    final cat = category!.toLowerCase();
+    if (cat.contains('budget') || cat.contains('street')) {
+      return PriceCategory.budget;
+    } else if (cat.contains('fine') || cat.contains('luxury')) {
+      return PriceCategory.fineDining;
+    } else if (cat.contains('mid') || cat.contains('international')) {
+      return PriceCategory.midRange;
+    }
+    return PriceCategory.unknown;
   }
 
-  // Create from JSON (from Supabase or assets)
-  factory Restaurant.fromJson(Map<String, dynamic> json) {
-    return Restaurant(
-      id: json['id'] as String?,
+  double? get averageReviewRating {
+    if (userReviews.isEmpty) return rating;
+    final ratedReviews = userReviews.where((r) => r.rating != null).toList();
+    if (ratedReviews.isEmpty) return rating;
+    return ratedReviews.map((r) => r.rating!).reduce((a, b) => a + b) / ratedReviews.length;
+  }
+
+  factory RestaurantModel.fromJson(Map<String, dynamic> json) {
+    return RestaurantModel(
+      id: json['id'] as String? ?? '',
       name: json['name'] as String,
       city: json['city'] as String,
       location: json['location'] as String?,
@@ -65,11 +87,19 @@ class Restaurant {
       hours: json['hours'] as String?,
       features: json['features'] as String?,
       signatureDishes: json['signature_dishes'] != null
-          ? List<String>.from(json['signature_dishes'])
+          ? List<String>.from(json['signature_dishes'] as List<dynamic>)
           : json['signatureDishes'] != null
-              ? List<String>.from(json['signatureDishes'])
-              : null,
-      userReviews: json['user_reviews'] ?? json['userReviews'],
+              ? List<String>.from(json['signatureDishes'] as List<dynamic>)
+              : [],
+      userReviews: json['user_reviews'] != null
+          ? (json['user_reviews'] as List<dynamic>)
+              .map((r) => UserReview.fromJson(r as Map<String, dynamic>))
+              .toList()
+          : json['userReviews'] != null
+              ? (json['userReviews'] as List<dynamic>)
+                  .map((r) => UserReview.fromJson(r as Map<String, dynamic>))
+                  .toList()
+              : [],
       sources: json['sources'] as String?,
       rating: json['rating'] != null ? (json['rating'] as num).toDouble() : null,
       category: json['category'] as String?,
@@ -80,8 +110,27 @@ class Restaurant {
     );
   }
 
-  // Copy with method for immutability
-  Restaurant copyWith({
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'city': city,
+      'location': location,
+      'cuisine': cuisine,
+      'priceRange': priceRange,
+      'hours': hours,
+      'features': features,
+      'signatureDishes': signatureDishes,
+      'userReviews': userReviews.map((r) => r.toJson()).toList(),
+      'sources': sources,
+      'rating': rating,
+      'category': category,
+      if (userId != null) 'user_id': userId,
+      if (createdAt != null) 'created_at': createdAt!.toIso8601String(),
+    };
+  }
+
+  RestaurantModel copyWith({
     String? id,
     String? name,
     String? city,
@@ -91,14 +140,14 @@ class Restaurant {
     String? hours,
     String? features,
     List<String>? signatureDishes,
-    List<dynamic>? userReviews,
+    List<UserReview>? userReviews,
     String? sources,
     double? rating,
     String? category,
     String? userId,
     DateTime? createdAt,
   }) {
-    return Restaurant(
+    return RestaurantModel(
       id: id ?? this.id,
       name: name ?? this.name,
       city: city ?? this.city,
