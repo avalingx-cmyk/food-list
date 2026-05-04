@@ -3,18 +3,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../models/restaurant_model.dart';
 import '../providers/restaurant_provider.dart';
-import 'restaurant_form_screen.dart';
-import 'restaurant_detail_screen.dart';
+import '../providers/filter_provider.dart';
+import '../../../widgets/filter_bottom_sheet.dart';
+import '../../../widgets/restaurant_card.dart';
 
 class RestaurantListScreen extends ConsumerStatefulWidget {
-  const RestaurantListScreen({Key? key}) : super(key: key);
+  const RestaurantListScreen({super.key});
 
   @override
-  ConsumerState<RestaurantListScreen> createState() => _RestaurantListScreenState();
+  ConsumerState<RestaurantListScreen> createState() =>
+      _RestaurantListScreenState();
 }
 
 class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
   final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.text = ref.read(restaurantFilterProvider).searchQuery;
+  }
 
   @override
   void dispose() {
@@ -24,19 +32,31 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final restaurantsAsync = ref.watch(restaurantsProvider);
-    final notifier = ref.read(restaurantsProvider.notifier);
+    final filteredAsync = ref.watch(filteredRestaurantsProvider);
+    final filter = ref.watch(restaurantFilterProvider);
+    final filterNotifier = ref.read(restaurantFilterProvider.notifier);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Restaurants (47)'),
+        title: const Text('Restaurants'),
+        actions: [
+          IconButton(
+            icon: Badge(
+              isLabelVisible: filter.hasActiveFilters,
+              label: Text('${filter.activeFilterCount}'),
+              child: const Icon(Icons.filter_list),
+            ),
+            onPressed: () => showFilterBottomSheet(context),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: TextField(
               controller: _searchController,
-              onChanged: (value) => notifier.setSearchQuery(value),
+              onChanged: (value) => filterNotifier.setSearchQuery(value),
               decoration: InputDecoration(
                 hintText: 'Search restaurants...',
                 prefixIcon: const Icon(Icons.search),
@@ -45,12 +65,12 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _searchController.clear();
-                          notifier.setSearchQuery('');
+                          filterNotifier.setSearchQuery('');
                         },
                       )
                     : null,
                 filled: true,
-                fillColor: Theme.of(context).colorScheme.surface,
+                fillColor: theme.colorScheme.surface,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide.none,
@@ -60,124 +80,92 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
           ),
         ),
       ),
-      body: restaurantsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(
-          child: Text('Error: $error'),
-        ),
-        data: (restaurants) {
-          if (restaurants.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.restaurant,
-                    size: 64,
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    notifier.searchQuery.isEmpty
-                        ? 'No restaurants found. Tap the + button to add one.'
-                        : 'No restaurants match your search.',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            );
-          }
-          return ListView.builder(
-            itemCount: restaurants.length,
-            itemBuilder: (context, index) {
-              final restaurant = restaurants[index];
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.blue.shade100,
-                  child: Text(
-                    restaurant.name.substring(0, 1).toUpperCase(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                title: Row(
+      body: Column(
+        children: [
+          if (filter.hasActiveFilters) _buildActiveFilters(filter, filterNotifier, theme),
+          Expanded(
+            child: filteredAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) => Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Text(
-                        restaurant.name,
-                        style: const TextStyle(fontWeight: FontWeight.w500),
-                      ),
+                    const Icon(Icons.error_outline, size: 48, color: Colors.grey),
+                    const SizedBox(height: 16),
+                    Text('Error: $error', textAlign: TextAlign.center),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () => ref.refresh(restaurantsProvider),
+                      child: const Text('Retry'),
                     ),
-                    if (restaurant.rating != null) ...[
-                      const Icon(Icons.star, size: 16, color: Colors.amber),
-                      const SizedBox(width: 4),
-                      Text(
-                        restaurant.rating!.toStringAsFixed(1),
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
                   ],
                 ),
-                subtitle: Column(
+              ),
+              data: (restaurants) {
+                if (restaurants.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.restaurant,
+                          size: 64,
+                          color: theme.colorScheme.primary.withOpacity(0.5),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          filter.searchQuery.isEmpty && !filter.hasActiveFilters
+                              ? 'No restaurants found.'
+                              : 'No restaurants match your filters.',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyLarge,
+                        ),
+                        if (filter.hasActiveFilters) ...[
+                          const SizedBox(height: 16),
+                          TextButton(
+                            onPressed: () => filterNotifier.clearAll(),
+                            child: const Text('Clear filters'),
+                          ),
+                        ],
+                      ],
+                    ),
+                  );
+                }
+                return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(restaurant.city),
-                    if (restaurant.cuisine != null)
-                      Text(
-                        restaurant.cuisine!,
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                  ],
-                ),
-                trailing: PopupMenuButton<String>(
-                  onSelected: (value) async {
-                    if (value == 'edit') {
-                      await context.push('/restaurants/${restaurant.id}/edit');
-                      ref.refresh(restaurantsProvider);
-                    } else if (value == 'delete') {
-                      await showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Delete Restaurant'),
-                          content: Text(
-                              'Are you sure you want to delete ${restaurant.name}?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('Cancel'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () async {
-                                Navigator.of(context).pop();
-                                await ref
-                                    .read(restaurantServiceProvider)
-                                    .deleteRestaurant(restaurant.id);
-                                ref.refresh(restaurantsProvider);
-                              },
-                              child: const Text('Delete'),
-                            ),
-                          ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Text(
+                        '${restaurants.length} restaurant${restaurants.length == 1 ? '' : 's'} found',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
                         ),
-                      );
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'edit',
-                      child: Text('Edit'),
+                      ),
                     ),
-                    const PopupMenuItem(
-                      value: 'delete',
-                      child: Text('Delete'),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.only(bottom: 80),
+                        itemCount: restaurants.length,
+                        itemBuilder: (context, index) {
+                          final restaurant = restaurants[index];
+                          return RestaurantCard(
+                            restaurant: restaurant,
+                            onTap: () {
+                              context.push(
+                                '/city/${restaurant.city}/restaurant/${restaurant.id}',
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ],
-                ),
-                onTap: () {
-                  context.push('/restaurants/${restaurant.id}');
-                },
-              );
-            },
-          );
-        },
+                );
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -185,6 +173,83 @@ class _RestaurantListScreenState extends ConsumerState<RestaurantListScreen> {
           ref.refresh(restaurantsProvider);
         },
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget _buildActiveFilters(
+    RestaurantFilterState filter,
+    RestaurantFilterNotifier notifier,
+    ThemeData theme,
+  ) {
+    final chips = <Widget>[];
+
+    for (final city in filter.selectedCities) {
+      chips.add(_buildFilterChip(
+        label: city,
+        onRemove: () => notifier.setCity(city, false),
+        theme: theme,
+      ));
+    }
+    for (final cuisine in filter.selectedCuisines) {
+      chips.add(_buildFilterChip(
+        label: cuisine,
+        onRemove: () => notifier.setCuisine(cuisine, false),
+        theme: theme,
+      ));
+    }
+    for (final category in filter.selectedCategories) {
+      chips.add(_buildFilterChip(
+        label: category,
+        onRemove: () => notifier.setCategory(category, false),
+        theme: theme,
+      ));
+    }
+    for (final pc in filter.selectedPriceCategories) {
+      const labels = {
+        PriceCategory.budget: 'Budget',
+        PriceCategory.midRange: 'Mid-Range',
+        PriceCategory.fineDining: 'Fine Dining',
+        PriceCategory.unknown: 'Other',
+      };
+      chips.add(_buildFilterChip(
+        label: labels[pc] ?? pc.name,
+        onRemove: () => notifier.setPriceCategory(pc, false),
+        theme: theme,
+      ));
+    }
+    if (filter.minRating != null) {
+      chips.add(_buildFilterChip(
+        label: '${filter.minRating}+ stars',
+        onRemove: () => notifier.clearMinRating(),
+        theme: theme,
+      ));
+    }
+
+    return Container(
+      height: 44,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: chips,
+      ),
+    );
+  }
+
+  Widget _buildFilterChip({
+    required String label,
+    required VoidCallback onRemove,
+    required ThemeData theme,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+      child: InputChip(
+        label: Text(label, style: const TextStyle(fontSize: 12)),
+        onDeleted: onRemove,
+        deleteIconColor: theme.colorScheme.primary,
+        backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+        side: BorderSide(color: theme.colorScheme.primary.withOpacity(0.3)),
+        labelStyle: TextStyle(color: theme.colorScheme.primary),
       ),
     );
   }

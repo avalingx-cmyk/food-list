@@ -166,3 +166,5 @@ class RestaurantModel {
     );
   }
 }
+
+typedef Restaurant = RestaurantModel;

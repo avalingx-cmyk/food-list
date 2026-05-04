@@ -11,6 +11,8 @@ import 'features/restaurant/screens/restaurant_form_screen.dart';
 import 'features/restaurant/repositories/restaurant_repository.dart';
 import 'features/food_item/screens/food_list_screen.dart';
 import 'features/food_item/screens/food_item_form_screen.dart';
+import 'features/food_item/services/food_item_service.dart';
+import 'features/food_item/models/food_item_model.dart';
 import 'features/explore/screens/explore_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/city_screen.dart';
