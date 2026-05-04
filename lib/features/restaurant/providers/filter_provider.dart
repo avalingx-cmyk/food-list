@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/restaurant_model.dart';
+import 'restaurant_provider.dart';
 
 class RestaurantFilterState {
   final Set<String> selectedCities;
