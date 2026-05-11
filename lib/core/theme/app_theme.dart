@@ -107,10 +107,8 @@ class AppTheme {
       primary: primary,
       onPrimary: onPrimary,
       secondary: secondary,
-      surface: Colors.white,
-      background: background,
+      surface: background,
       error: destructive,
-      onBackground: foreground,
       onSurface: foreground,
     ),
     scaffoldBackgroundColor: background,
@@ -151,7 +149,7 @@ class AppTheme {
       filled: true,
       fillColor: Colors.white,
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Colors.white,
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -170,10 +168,8 @@ class AppTheme {
       primary: darkPrimary,
       onPrimary: darkOnPrimary,
       secondary: darkSecondary,
-      surface: darkMuted,
-      background: darkBackground,
+      surface: darkBackground,
       error: darkDestructive,
-      onBackground: darkForeground,
       onSurface: darkForeground,
     ),
     scaffoldBackgroundColor: darkBackground,
@@ -214,7 +210,7 @@ class AppTheme {
       filled: true,
       fillColor: darkMuted,
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: darkMuted,
       elevation: 2,
       shape: RoundedRectangleBorder(

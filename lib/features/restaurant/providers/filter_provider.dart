@@ -201,7 +201,9 @@ final filteredRestaurantsProvider = Provider<AsyncValue<List<RestaurantModel>>>(
 });
 
 final filterOptionsProvider = FutureProvider<FilterOptions>((ref) async {
-  final restaurants = await ref.watch(restaurantsProvider.future);
+  final restaurantsAsync = ref.watch(restaurantsProvider);
+  final restaurants = restaurantsAsync.value ?? [];
+  
   final cities = restaurants.map((r) => r.city).toSet().toList()..sort();
   final cuisines = restaurants
       .map((r) => r.cuisine)

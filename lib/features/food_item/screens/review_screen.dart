@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/review_model.dart';
 import '../services/review_service.dart';
 import '../models/food_item_model.dart';
+import '../providers/review_provider.dart';
 
 class ReviewScreen extends ConsumerStatefulWidget {
   final String foodItemId;

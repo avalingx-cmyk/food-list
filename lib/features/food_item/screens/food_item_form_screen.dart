@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/food_item_model.dart';
 import '../services/food_item_service.dart';
+import '../providers/food_item_provider.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../core/services/ocr_service.dart';
+import 'dart:io';
 
 class FoodItemFormScreen extends ConsumerStatefulWidget {
   final String restaurantId;
@@ -25,6 +29,8 @@ class _FoodItemFormScreenState extends ConsumerState<FoodItemFormScreen> {
   late TextEditingController _reviewScoreController;
   bool _isLoading = false;
   FoodItem? _foodItem; // For editing
+  final _ocrService = OCRService();
+  final _picker = ImagePicker();
 
   @override
   void initState() {
@@ -54,7 +60,7 @@ class _FoodItemFormScreenState extends ConsumerState<FoodItemFormScreen> {
           _priceController.text = foodItem.price.toStringAsFixed(2);
           _photoUrlController.text = foodItem.photoUrl ?? '';
           _reviewScoreController.text = foodItem.reviewScore != null 
-              ? foodItem.reviewScore.toStringAsFixed(1) 
+              ? foodItem.reviewScore!.toStringAsFixed(1) 
               : '';
         });
       }
@@ -73,7 +79,77 @@ class _FoodItemFormScreenState extends ConsumerState<FoodItemFormScreen> {
     _priceController.dispose();
     _photoUrlController.dispose();
     _reviewScoreController.dispose();
+    _ocrService.dispose();
     super.dispose();
+  }
+
+  Future<void> _scanMenu() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    if (image == null) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      final text = await _ocrService.recognizeText(File(image.path));
+      final items = _ocrService.parseMenuText(text);
+
+      if (items.isNotEmpty && mounted) {
+        if (items.length == 1) {
+          final selected = items.first;
+          setState(() {
+            _nameController.text = selected['name'];
+            _priceController.text = selected['price'].toStringAsFixed(2);
+          });
+        } else {
+          // Show a selection dialog for multiple items
+          final selected = await showDialog<Map<String, dynamic>>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Select Item from Menu'),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return ListTile(
+                      title: Text(item['name']),
+                      trailing: Text('\$${item['price'].toStringAsFixed(2)}'),
+                      onTap: () => Navigator.pop(context, item),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+
+          if (selected != null && mounted) {
+            setState(() {
+              _nameController.text = selected['name'];
+              _priceController.text = selected['price'].toStringAsFixed(2);
+            });
+          }
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Menu scanned successfully!')),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No food items recognized in the image.')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('OCR Failed: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   Future<void> _saveFoodItem() async {
@@ -134,6 +210,15 @@ class _FoodItemFormScreenState extends ConsumerState<FoodItemFormScreen> {
                 key: _formKey,
                 child: ListView(
                   children: [
+                    OutlinedButton.icon(
+                      onPressed: _scanMenu,
+                      icon: const Icon(Icons.camera_alt),
+                      label: const Text('Scan Menu with OCR'),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                     TextFormField(
                       controller: _nameController,
                       decoration: const InputDecoration(

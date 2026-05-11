@@ -24,7 +24,7 @@ void main() async {
 final GoRouter _router = GoRouter(
   redirect: (context, state) {
     final loggedIn = Supabase.instance.client.auth.currentUser != null;
-    final loggingIn = state.subloc == '/login' || state.subloc == '/signup';
+    final loggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/signup';
 
     if (!loggedIn && !loggingIn) return '/login';
     if (loggedIn && loggingIn) return '/home';
@@ -47,7 +47,7 @@ final GoRouter _router = GoRouter(
     // Protected routes with bottom navigation
     ShellRoute(
       builder: (context, state, child) {
-        final location = state.subloc;
+        final location = state.matchedLocation;
         int currentIndex = 0;
         if (location.startsWith('/explore')) {
           currentIndex = 1;
@@ -103,7 +103,7 @@ final GoRouter _router = GoRouter(
           path: '/city/:cityId',
           name: 'city_detail',
           builder: (context, state) {
-            final cityId = state.params['cityId']!;
+            final cityId = state.pathParameters['cityId']!;
             return CityScreen(cityId: cityId);
           },
           routes: [
@@ -112,8 +112,8 @@ final GoRouter _router = GoRouter(
               path: 'restaurant/:restaurantId',
               name: 'restaurant_detail',
               builder: (context, state) {
-                final cityId = state.params['cityId']!;
-                final restaurantId = state.params['restaurantId']!;
+                final cityId = state.pathParameters['cityId']!;
+                final restaurantId = state.pathParameters['restaurantId']!;
                 return RestaurantDetailScreen(
                   cityId: cityId,
                   restaurantId: restaurantId,
@@ -143,7 +143,7 @@ final GoRouter _router = GoRouter(
               path: ':restaurantId/edit',
               name: 'restaurant_edit',
               builder: (context, state) {
-                final restaurantId = state.params['restaurantId']!;
+                final restaurantId = state.pathParameters['restaurantId']!;
                 return RestaurantFormScreen(
                   restaurantId: restaurantId,
                 );
@@ -153,7 +153,7 @@ final GoRouter _router = GoRouter(
               path: ':restaurantId/food',
               name: 'food_list',
               builder: (context, state) {
-                final restaurantId = state.params['restaurantId']!;
+                final restaurantId = state.pathParameters['restaurantId']!;
                 return FoodListScreen(
                   restaurantId: restaurantId,
                   restaurantName: 'Restaurant',
@@ -164,7 +164,7 @@ final GoRouter _router = GoRouter(
                   path: 'add',
                   name: 'food_add',
                   builder: (context, state) {
-                    final restaurantId = state.params['restaurantId']!;
+                    final restaurantId = state.pathParameters['restaurantId']!;
                     return FoodItemFormScreen(
                       restaurantId: restaurantId,
                     );
@@ -174,8 +174,8 @@ final GoRouter _router = GoRouter(
                   path: ':foodId/edit',
                   name: 'food_edit',
                   builder: (context, state) {
-                    final restaurantId = state.params['restaurantId']!;
-                    final foodId = state.params['foodId']!;
+                    final restaurantId = state.pathParameters['restaurantId']!;
+                    final foodId = state.pathParameters['foodId']!;
                     return FoodItemFormScreen(
                       restaurantId: restaurantId,
                       foodId: foodId,

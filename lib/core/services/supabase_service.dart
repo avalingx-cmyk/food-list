@@ -32,7 +32,7 @@ class SupabaseService {
     await _client.auth.signOut();
   }
 
-  Future<UserResponse> updateUser({String? email, String? password, UserMetadata? data}) async {
+  Future<UserResponse> updateUser({String? email, String? password, Map<String, dynamic>? data}) async {
     return await _client.auth.updateUser(
       UserAttributes(
         email: email,

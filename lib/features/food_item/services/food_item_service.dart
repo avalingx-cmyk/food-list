@@ -66,7 +66,7 @@ class FoodItemService {
       final response = await _supabase
           .from('food_items')
           .update(foodItem.toJson())
-          .eq('id', foodItem.id)
+          .eq('id', foodItem.id!)
           .select()
           .single();
 
@@ -112,25 +112,15 @@ class FoodItemService {
 
       var query = _supabase
           .from('food_items')
-          .select()
+          .select('*, restaurants(name, city)')
           .eq('user_id', user.id);
 
       if (searchQuery.isNotEmpty) {
         query = query.ilike('name', '%$searchQuery%');
       }
 
-      // Apply sorting based on sortBy parameter
-      switch (sortBy) {
-        case 'price':
-          return (await query.order('price', ascending: ascending)).map((json) => FoodItem.fromJson(json)).toList();
-        case 'review_score':
-          return (await query.order('review_score', ascending: ascending)).map((json) => FoodItem.fromJson(json)).toList();
-        case 'name':
-          return (await query.order('name', ascending: ascending)).map((json) => FoodItem.fromJson(json)).toList();
-        case 'created_at':
-        default:
-          return (await query.order('created_at', ascending: ascending)).map((json) => FoodItem.fromJson(json)).toList();
-      }
+      final response = await query.order(sortBy == 'created_at' ? 'created_at' : sortBy, ascending: ascending);
+      return (response as List).map((json) => FoodItem.fromJson(json)).toList();
     } catch (e) {
       throw Exception('Failed to load food items: $e');
     }

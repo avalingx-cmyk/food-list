@@ -5,6 +5,8 @@ class FoodItem {
   final double price;
   final String? photoUrl;
   final double? reviewScore;
+  final String? restaurantName;
+  final String? city;
   final String? userId;
   final DateTime? createdAt;
 
@@ -15,6 +17,8 @@ class FoodItem {
     required this.price,
     this.photoUrl,
     this.reviewScore,
+    this.restaurantName,
+    this.city,
     this.userId,
     this.createdAt,
   });
@@ -43,6 +47,8 @@ class FoodItem {
       reviewScore: json['review_score'] != null
           ? (json['review_score'] as num).toDouble()
           : null,
+      restaurantName: json['restaurants']?['name'] as String?,
+      city: json['restaurants']?['city'] as String?,
       userId: json['user_id'] as String?,
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)
@@ -58,6 +64,8 @@ class FoodItem {
     double? price,
     String? photoUrl,
     double? reviewScore,
+    String? restaurantName,
+    String? city,
     String? userId,
     DateTime? createdAt,
   }) {
@@ -68,6 +76,8 @@ class FoodItem {
       price: price ?? this.price,
       photoUrl: photoUrl ?? this.photoUrl,
       reviewScore: reviewScore ?? this.reviewScore,
+      restaurantName: restaurantName ?? this.restaurantName,
+      city: city ?? this.city,
       userId: userId ?? this.userId,
       createdAt: createdAt ?? this.createdAt,
     );

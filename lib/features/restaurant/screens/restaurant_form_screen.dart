@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/restaurant_model.dart';
 import '../services/restaurant_service.dart';
+import '../providers/restaurant_provider.dart';
 
 class RestaurantFormScreen extends ConsumerStatefulWidget {
   final String? restaurantId; // If null, we are adding; if provided, we are editing.
